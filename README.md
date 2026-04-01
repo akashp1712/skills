@@ -46,6 +46,17 @@ npx shadcn@latest add skeleton
 
 ---
 
+### 📚 **zero-to-hero** - Comprehensive Learning Guides
+Generate zero‑to‑hero markdown guides for any topic, with progressive chapters, analogies, ASCII art, diagrams, and code examples.
+
+- **🛠️ Fully Configurable**: pace, depth, custom analogy, context.
+- **📖 Structured**: clear chapter flow, scenario checks, glossary.
+- **🚀 Easy to Use**: `npx skills add akashp1712/skills --skill zero-to-hero`
+
+**Install**: `npx skills add akashp1712/skills --skill zero-to-hero`
+
+**Examples**: see the `zero-to-hero/examples/` directory for sample guides.
+
 ## 🎯 Why Choose These Skills?
 
 ### 🔒 **Security by Default**
