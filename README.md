@@ -83,6 +83,7 @@ Each skill includes clear documentation, examples, and best practices for immedi
 # Install individual skills
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
+npx skills add akashp1712/skills --skill zero-to-hero
 ```
 
 ### Browse All Skills
