@@ -57,6 +57,47 @@ Generate zero‑to‑hero markdown guides for any topic, with progressive chapte
 
 **Examples**: see the `zero-to-hero/examples/` directory for sample guides.
 
+---
+
+### 🧹 **workspace-disk-cleanup** - Reclaim Disk from Stale Dev Caches
+**Safely remove `node_modules`, `.next`, `.venv`, and other regenerable folders** from projects you have not touched recently — without deleting source code or git history.
+
+- **🛡️ Safe by design**: only known artifact directory names at project roots
+- **⏱️ Inactivity threshold**: default 14 days (configurable)
+- **🎯 Exclusions**: keep active repos (e.g. `--exclude voice/evercall`)
+- **🎯 Pick & choose**: numbered list — select which stale projects to clean
+- **✅ Confirm once**: interactive `yes` or agent uses `--select` + `--yes` after you approve
+- **⏱️ Configurable staleness**: `--threshold-days N` (default 14)
+
+**Install**: `npx skills add akashp1712/skills --skill workspace-disk-cleanup`
+
+**Usage**:
+
+```bash
+# List stale projects (any folder via --workspace)
+python3 workspace-disk-cleanup/scripts/clean_dev_artifacts.py \
+  --workspace ~/workspace \
+  --threshold-days 30 \
+  --exclude voice/evercall \
+  --list-only
+
+# Interactive: list → pick numbers → type yes
+python3 workspace-disk-cleanup/scripts/clean_dev_artifacts.py \
+  --workspace ~/workspace \
+  --threshold-days 14 \
+  --exclude voice/evercall
+
+# After you choose 1,3 in chat and confirm:
+python3 workspace-disk-cleanup/scripts/clean_dev_artifacts.py \
+  --workspace ~/workspace \
+  --select 1,3 \
+  --yes
+```
+
+Restore deps when you reopen a project: `pnpm install`, `npm install`, or `uv sync` as appropriate.
+
+---
+
 ## 🎯 Why Choose These Skills?
 
 ### 🔒 **Security by Default**
@@ -84,6 +125,7 @@ Each skill includes clear documentation, examples, and best practices for immedi
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
 npx skills add akashp1712/skills --skill zero-to-hero
+npx skills add akashp1712/skills --skill workspace-disk-cleanup
 ```
 
 ### Browse All Skills
