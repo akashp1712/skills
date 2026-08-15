@@ -1,12 +1,28 @@
 #!/usr/bin/env python3
-"""Validate Four Answers output format."""
+"""Validate Four Answers output format (Bezos framework)."""
 
 from __future__ import annotations
 
 import re
 import sys
 
-VALID_STATES = ("YES", "NO", "DATA", "I DON'T KNOW")
+YES_NO = frozenset({"YES", "NO"})
+
+NUMBER_PATTERN = re.compile(
+    r"^("
+    r"\$?-?[\d,]+(?:\.\d+)?%?"  # 37, $12,400, 15%
+    r"|"
+    r"\d{4}-\d{2}-\d{2}"  # 2026-03-08
+    r"|"
+    r"[\d,]+(?:\.\d+)?[a-zA-Z/%]+"  # 4m12s, 1000/min, 5 frameworks shorthand
+    r")$",
+    re.IGNORECASE,
+)
+
+IDK_BY_X_PATTERN = re.compile(
+    r"^I DON'T KNOW, BUT I'LL KNOW IT BY .+$",
+    re.IGNORECASE,
+)
 
 HEDGING_PATTERNS = re.compile(
     r"\b("
@@ -22,6 +38,17 @@ OPINION_PATTERNS = re.compile(
 )
 
 
+def is_valid_first_line(line: str) -> bool:
+    normalized = line.strip().upper().replace("’", "'")
+    if normalized in YES_NO:
+        return True
+    if NUMBER_PATTERN.match(line.strip()):
+        return True
+    if IDK_BY_X_PATTERN.match(normalized):
+        return True
+    return False
+
+
 def validate(text: str) -> list[str]:
     errors: list[str] = []
     stripped = text.strip()
@@ -29,17 +56,23 @@ def validate(text: str) -> list[str]:
     if not stripped:
         return ["Empty response"]
 
-    first_line = stripped.splitlines()[0].strip().upper()
-    normalized = first_line.replace("’", "'")
+    first_line = stripped.splitlines()[0].strip()
+    normalized = first_line.upper().replace("’", "'")
 
-    if normalized not in VALID_STATES:
+    if not is_valid_first_line(first_line):
         errors.append(
-            "First line must be exactly one of: YES, NO, DATA, I DON'T KNOW"
+            "First line must be YES, NO, a number/measurement, or "
+            "I DON'T KNOW, BUT I'LL KNOW IT BY X"
+        )
+
+    if normalized == "I DON'T KNOW":
+        errors.append(
+            "Bare I DON'T KNOW is not allowed — commit to when you'll know it"
         )
 
     body = "\n".join(stripped.splitlines()[1:]).strip()
-    if not body:
-        errors.append("Response must include an explanation after the state line")
+    if not body and normalized not in YES_NO and not NUMBER_PATTERN.match(first_line):
+        errors.append("Response should include context after the first line")
 
     for match in HEDGING_PATTERNS.finditer(body):
         errors.append(f"Hedging word found: {match.group(0)}")

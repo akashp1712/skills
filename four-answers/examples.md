@@ -28,21 +28,21 @@ No references to `fooBar()` appear outside its definition in `src/utils/foo.ts`.
 
 **Answer:**
 
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY TOMORROW MORNING
 
-Static search shows no callers, but runtime usage through reflection, dynamic imports, or external consumers cannot be ruled out without tests or deployment context. Run the test suite and check API consumers before deleting.
+Static search shows no callers, but dynamic imports and external consumers need a full test run and API contract check before deletion.
 
-## Mixed certainty
+## Mixed questions
 
-**User:** Is our build passing and how long does CI take?
+**User:** Is CI green and how long did it take?
 
 **Answer:**
 
-DATA
+4m 12s
 
-The latest CI run on `main` passed. The workflow completed in 4m 12s.
+Latest `main` CI run passed.
 
-If only one sub-question is knowable, answer the knowable part under DATA and state the unknown part plainly in the explanation without hedging.
+If one sub-question is boolean and one numeric, answer each in its own block.
 
 ## Recommendations disguised as questions
 
@@ -50,29 +50,21 @@ If only one sub-question is knowable, answer the knowable part under DATA and st
 
 **Answer:**
 
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY NEXT WEEK
 
-That depends on client complexity, team familiarity, and caching needs. Compare query flexibility requirements and current REST pain points against migration cost.
+A one-page comparison of our top 10 client query patterns against REST pain points and caching constraints will make the call clear.
 
-Do not answer YES or NO from general industry opinion.
+Do not answer Yes or No from general industry opinion.
 
-## Historical or future claims
+## Historical claims without access
 
 **User:** Did we ship the billing feature last quarter?
 
-**With no access to release history:**
-
-I DON'T KNOW
-
-Release records are not in the current context. Check git tags, changelog, or deployment logs for the billing feature merge date.
-
-**User:** Will OpenAI release GPT-6 next month?
-
 **Answer:**
 
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY END OF DAY
 
-Release timing for unreleased models is not publicly established.
+I'll check git tags, changelog, and deployment logs for the billing feature merge date.
 
 ## Comparative questions
 
@@ -80,33 +72,43 @@ Release timing for unreleased models is not publicly established.
 
 **Answer:**
 
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY WEDNESDAY
 
-The answer depends on value size, eviction pattern, and read/write ratio in production. Benchmark both with representative traffic before choosing.
+We'll benchmark both with representative production traffic in staging.
 
-## Obvious vs established
-
-**User:** Is the sky blue?
-
-**Answer:**
-
-YES
-
-Earth's atmosphere scatters shorter blue wavelengths more than longer ones (Rayleigh scattering), which is why the sky appears blue in daylight.
-
-Obvious truths still need YES/NO/DATA/IDK — not hedging.
-
-## When DATA is better than YES
+## When a number is the whole answer
 
 **User:** What's our current MRR?
 
 **Answer:**
 
-DATA
+$12,400
 
-Current MRR is $12,400 based on the Stripe dashboard export in context.
+From the Stripe dashboard export in context.
 
-Do not answer YES to "do we have MRR data?" when the user asked for the number.
+Do not answer Yes to "do we have MRR data?" when the user asked for the number.
+
+## Uncomfortable with option 4
+
+**User:** Will OpenAI release GPT-6 next month?
+
+**Bad answer:**
+
+I DON'T KNOW
+
+Release timing is not public.
+
+**Good answer:**
+
+I DON'T KNOW, BUT I'LL KNOW IT BY THE NEXT OPENAI DEV DAY OR OFFICIAL ANNOUNCEMENT
+
+There is no reliable pre-announcement signal. The answer becomes knowable when OpenAI publishes a release date or ships.
+
+If you truly cannot name any X, state the work required to define one:
+
+I DON'T KNOW, BUT I'LL KNOW IT BY FRIDAY
+
+I need to assign an owner and pick a source of truth first. By Friday I'll have either a public release date to cite or a standing check cadence.
 
 ## Quoted hedging is allowed
 
@@ -114,6 +116,6 @@ Do not answer YES to "do we have MRR data?" when the user asked for the number.
 
 **Answer:**
 
-DATA
+9-12 months
 
 The investor said: "You probably have 9–12 months of runway if burn stays flat." That is their stated view, not an established fact about actual runway.

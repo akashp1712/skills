@@ -13,13 +13,13 @@
 
 ## 🚀 Featured Skills
 
-### 🎯 **four-answers** - No Hedging, Ever
-**Forces every substantive answer into one of four epistemic states:** YES, NO, DATA, or I DON'T KNOW.
+### 🎯 **four-answers** - Bezos's Four Answers
+**Forces every substantive answer into Jeff Bezos's four allowed responses:** Yes, No, a number, or I don't know but I'll know it by X.
 
 - **⚡ Auto-applies**: Activates on factual questions, decisions, and evaluations — no slash command required
 - **🚫 Anti-hedging**: Bans maybe, probably, likely, I think as substitutes for a real answer
-- **🔍 Evidence-first**: Gathers available data before defaulting to I DON'T KNOW
-- **📖 30+ examples**: See the skill README for YES/NO/DATA/IDK patterns across business, code, and strategy
+- **📅 Committed uncertainty**: Bare "I don't know" is not allowed — name when you'll know
+- **📖 30+ examples**: See the skill README for Yes/No/number/IDK-by-X patterns across business, code, and strategy
 
 **Perfect for**: decision-making, due diligence, factual Q&A, risk assessment, and any conversation where speculation is expensive.
 

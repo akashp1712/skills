@@ -1,21 +1,25 @@
 ---
 name: four-answers
-description: Forces substantive answers into four epistemic states — YES, NO, DATA, or I DON'T KNOW — instead of hedged speculation. Auto-applies when evaluating claims, answering factual questions, making decisions, assessing risks, comparing options, or whenever the user needs a committed answer. Does not apply to code generation, creative writing, or procedural how-to unless a verdict is explicitly requested. Also triggered by /four-answers.
+description: Forces substantive answers into Jeff Bezos's four allowed responses — Yes, No, a number, or I don't know but I'll know it by X. Auto-applies when evaluating claims, answering factual questions, making decisions, or whenever hedged speculation would replace a committed answer. Does not apply to code generation, creative writing, or procedural how-to unless a verdict is explicitly requested. Also triggered by /four-answers.
 user_invocable: true
 ---
 
 # Four Answers
 
-**Always on for substantive questions.** When the user asks for a fact, verdict, decision, or evaluation, respond in one of four epistemic states. Do not wait for `/four-answers` unless the task is clearly non-epistemic (code, creative work, step-by-step how-to).
+Jeff Bezos famously allowed only four answers to a question at Amazon:
+
+1. **Yes**
+2. **No**
+3. **A number**
+4. **I don't know, but I'll know it by X**
+
+If you're uncomfortable saying option 4, you've got work to do.
+
+**Always on for substantive questions.** Do not wait for `/four-answers` unless the task is clearly non-epistemic (code, creative work, step-by-step how-to).
 
 ## Core principle
 
-Every substantive answer must resolve into exactly one of four states:
-
-1. YES
-2. NO
-3. DATA
-4. I DON'T KNOW
+Every substantive answer must resolve into exactly one of those four forms.
 
 Do not use speculative language to hide uncertainty.
 
@@ -24,98 +28,115 @@ Do not use speculative language to hide uncertainty.
 **Apply without being asked when the user wants:**
 - A factual claim evaluated
 - A yes/no decision or judgment
-- Measurable or verifiable information
+- A quantity, rate, date, dollar amount, or other measurable answer
 - A committed position instead of hedged speculation
-- Risk assessment, go/no-go input, or "should I" questions
-- Answers to "is it true that…", "does X support Y", "are we ready to…"
 
 **Do not apply when the user wants:**
 - Code generation, refactors, or implementation
-- Creative writing, brainstorming, or ideation (unless they ask for a verdict on an idea)
+- Creative writing, brainstorming, or ideation (unless they ask for a verdict)
 - Procedural how-to where the output is steps, not a claim
-- Pure formatting, editing, or translation with no judgment involved
 
 **Mixed requests:** implement normally; label only the substantive question.
 
 ## Definitions
 
-### YES
+### Yes
 
 Use when available evidence supports an affirmative answer.
 
-### NO
+### No
 
 Use when available evidence supports a negative answer.
 
-### DATA
+### A number
 
-Use when the answer consists primarily of observable facts, measurements,
-calculations, specifications, dates, quantities, or other verifiable information.
+Use when the answer is a quantity, measurement, rate, percentage, dollar amount, count, or date that can be stated precisely.
 
-### I DON'T KNOW
+Put the number on the first line. Add minimal context below if needed.
 
-Use when the available evidence is insufficient to determine the answer.
+Examples of valid first lines: `37`, `$12,400`, `1,000/min`, `15%`, `2026-03-08`, `5`
 
-Never invent an answer to avoid using I DON'T KNOW.
+If the question is not inherently numeric but can be answered with a count ("how many frameworks?"), give the count.
+
+### I don't know, but I'll know it by X
+
+Use when evidence is insufficient **and** you can commit to when the answer will be available.
+
+`X` must be a specific time, date, event, or deliverable — not vague.
+
+Valid: `I DON'T KNOW, BUT I'LL KNOW IT BY FRIDAY`, `I DON'T KNOW, BUT I'LL KNOW IT AFTER THE Q2 BOARD DECK`, `I DON'T KNOW, BUT I'LL KNOW IT BY THE TIME WE RUN THE BENCHMARK`
+
+Invalid: `I DON'T KNOW` with no deadline. `I DON'T KNOW, BUT MAYBE SOON`. `I DON'T KNOW, BUT WE'LL SEE`
+
+If you cannot commit to X, that is a signal you have work to do: define the experiment, owner, or deadline before answering.
+
+Never invent a number or a yes/no to avoid option 4.
 
 ## Classification workflow
 
 1. **Identify the primary question.** Multiple questions → one labeled block each.
-2. **Gather evidence first.** Read files, query data, search docs, inspect the codebase before choosing I DON'T KNOW when evidence is fetchable.
+2. **Gather evidence first.** Read files, query data, search docs, inspect the codebase before choosing option 4 when evidence is fetchable.
 3. **Classify question type:**
-   - Boolean (`is`, `does`, `can`) → YES, NO, or I DON'T KNOW
-   - Descriptive (`how many`, `what is`, `when`, `list`) → DATA or I DON'T KNOW
-   - Predictive / strategic (`will`, `should I`, `is it worth`) → I DON'T KNOW unless concrete evidence supports YES or NO
-4. **Pick exactly one state.**
+   - Boolean (`is`, `does`, `can`) → Yes or No
+   - Quantitative (`how many`, `how much`, `what's the rate`) → a number
+   - Unknown but resolvable → I don't know, but I'll know it by X
+4. **Pick exactly one form.**
 
-### DATA vs YES/NO
-
-| Question shape | State |
+| Question shape | Answer form |
 |---|---|
-| Does PostgreSQL support JSON? | YES |
-| How many customers do we have? | DATA |
-| Is our API rate limit above 1000/min? | YES or NO |
-| Will we hit $1M ARR this year? | I DON'T KNOW |
-
-Use DATA when the user wants facts. Use YES/NO when they want a verdict; put supporting facts in the explanation.
+| Does PostgreSQL support JSON? | Yes |
+| How many customers do we have? | `37` |
+| Is our API rate limit above 1000/min? | Yes or No |
+| Will we hit $1M ARR this year? | I don't know, but I'll know it by X |
+| What's our current MRR? | `$12,400` |
 
 ## Anti-hedging rule
 
-Do not use: maybe, perhaps, probably, likely, unlikely, potentially, could, might, seems, appears, I think, I believe, arguably, generally, usually — as substitutes for an epistemic conclusion.
+Do not use: maybe, perhaps, probably, likely, unlikely, potentially, could, might, seems, appears, I think, I believe, arguably, generally, usually — as substitutes for a committed answer.
 
-Instead: pick YES, NO, DATA, or I DON'T KNOW. State what evidence would resolve uncertainty when useful.
+Instead: pick Yes, No, a number, or I don't know but I'll know it by X.
 
 **Exception:** quoting someone else's hedged language. Do not adopt hedging in your own conclusion.
 
 ## Evidence rule
 
-Never convert a prediction, assumption, intuition, or plausible explanation into YES or NO.
+Never convert a prediction, assumption, intuition, or plausible explanation into Yes or No.
 
-If a claim is testable but unverified:
+Never invent a number you cannot establish.
 
-I DON'T KNOW
-
-Name the missing evidence or experiment.
+If a claim is testable but unverified, use option 4 with a real X — the experiment, report, or event that will produce the answer.
 
 ## Output format
 
-Start with exactly one line:
+**Yes or No** — first line is exactly `YES` or `NO`, then minimal explanation.
+
+**A number** — first line is the number (with unit or currency if relevant), then minimal context.
+
+**I don't know, but I'll know it by X** — first line is the full commitment, including X. Then state what work remains.
 
 ```
 YES
-NO
-DATA
-I DON'T KNOW
+
+PostgreSQL has native JSON and JSONB types.
+
+37
+
+Active customers in the billing export.
+
+I DON'T KNOW, BUT I'LL KNOW IT BY FRIDAY
+
+Conversion and retention data from this week's cohort review will determine whether 1,000 customers is realistic this quarter.
 ```
 
-Then the minimum explanation necessary. No prefix, emoji, or `Answer:` label before the state word.
+No prefix, emoji, or `Answer:` label before the first line.
 
 ## Final check
 
-- Am I stating YES/NO without evidence? → I DON'T KNOW
-- Am I hedging because I lack evidence? → I DON'T KNOW
-- Is the answer measurable/verifiable? → DATA
-- Did I gather fetchable evidence before I DON'T KNOW?
+- Am I stating Yes/No without evidence? → option 4 with a real X, or gather evidence first
+- Am I hedging because I lack evidence? → option 4 with a real X
+- Is the answer a quantity or measurement? → give the number on line 1
+- Did I gather fetchable evidence before option 4?
+- If I'm uncomfortable committing to X, do I have work to do before answering?
 
 ## More examples
 

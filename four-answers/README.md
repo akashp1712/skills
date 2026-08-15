@@ -1,15 +1,15 @@
 # Four Answers
 
-Stop hedging. Every substantive answer resolves to exactly one state:
+Jeff Bezos famously allowed only **four answers** to a question at Amazon:
 
-| State | When to use |
-|-------|-------------|
-| **YES** | Evidence supports an affirmative answer |
-| **NO** | Evidence supports a negative answer |
-| **DATA** | The answer is facts, numbers, specs, dates, measurements |
-| **I DON'T KNOW** | Evidence is insufficient — say so plainly |
+1. **Yes**
+2. **No**
+3. **A number**
+4. **I don't know, but I'll know it by X**
 
-No *maybe*, *probably*, *likely*, *I think*. Pick a state.
+If you're uncomfortable saying option 4, you've got work to do.
+
+This Claude skill enforces the same discipline. No *maybe*, *probably*, *likely*, *I think*. Pick one of the four.
 
 ---
 
@@ -26,7 +26,7 @@ Or via marketplace:
 /plugin install four-answers
 ```
 
-Once installed, the skill **activates automatically** on factual questions, decisions, and evaluations. You do not need to invoke it every time.
+Once installed, the skill **activates automatically** on factual questions, decisions, and evaluations.
 
 Explicit trigger: `/four-answers`
 
@@ -34,7 +34,7 @@ Explicit trigger: `/four-answers`
 
 ## How it works
 
-Claude classifies your question, gathers available evidence (files, data, docs), then responds with one state word on the first line:
+Claude classifies your question, gathers available evidence, then responds in one of four forms:
 
 ```
 YES
@@ -42,13 +42,40 @@ YES
 PostgreSQL has native JSON and JSONB data types.
 ```
 
-The skill does **not** hijack code generation, creative writing, or step-by-step tutorials — only substantive questions where uncertainty would otherwise produce speculation.
+```
+37
+
+Active customers in the Stripe export.
+```
+
+```
+I DON'T KNOW, BUT I'LL KNOW IT BY FRIDAY
+
+We'll have conversion and retention numbers after this week's cohort review.
+```
+
+The skill does **not** hijack code generation, creative writing, or step-by-step tutorials.
+
+---
+
+## Origin
+
+Bezos banned PowerPoint at Amazon because slides let people gloss over ideas without committing to what's true.
+
+The same discipline applies to answers:
+
+- Don't hide behind hedging words when you mean **No**
+- Don't guess when you mean **I don't know, but I'll know it by X**
+- Give the **number** when you have it
+- Say **Yes** only when evidence supports it
+
+Bezos's 2004 memo: [Why Amazon banned PowerPoint](https://www.businessinsider.com/jeff-bezos-email-against-powerpoint-presentations-2015-7)
 
 ---
 
 ## Examples
 
-### YES — evidence supports yes
+### Yes
 
 **Does PostgreSQL support JSON?**
 
@@ -56,14 +83,6 @@ The skill does **not** hijack code generation, creative writing, or step-by-step
 YES
 
 PostgreSQL has native JSON and JSONB data types.
-```
-
-**Is TypeScript a superset of JavaScript?**
-
-```
-YES
-
-TypeScript adds static types and compiles to JavaScript; valid JS is valid TS (with `strict` exceptions for edge cases).
 ```
 
 **Does our app use Clerk for auth?**
@@ -84,7 +103,7 @@ The migration only adds a nullable column with no backfill required.
 
 ---
 
-### NO — evidence supports no
+### No
 
 **Does SQLite support stored procedures?**
 
@@ -94,20 +113,12 @@ NO
 SQLite does not implement stored procedures.
 ```
 
-**Is `user.email` validated before save in this form?**
+**Is `user.email` validated before save?**
 
 ```
 NO
 
-`SignupForm.tsx` submits directly to the API with no client-side or schema validation on `email`.
-```
-
-**Are we SOC 2 certified?**
-
-```
-NO
-
-No SOC 2 report or certification is referenced in compliance docs or vendor questionnaires in this repo.
+`SignupForm.tsx` submits to the API with no validation on `email`.
 ```
 
 **Did the deploy succeed?**
@@ -115,143 +126,155 @@ No SOC 2 report or certification is referenced in compliance docs or vendor ques
 ```
 NO
 
-The latest GitHub Actions run on `main` failed at the `test` step with 3 failing specs.
+The latest GitHub Actions run on `main` failed at the `test` step.
 ```
 
 ---
 
-### DATA — facts, numbers, specs
+### A number
 
 **How many customers do we have?**
 
 ```
-DATA
+37
 
-You currently have 37 customers.
+Active customers in the billing export.
 ```
 
 **What's our API rate limit?**
 
 ```
-DATA
+1,000/min
 
-The rate limit is 1,000 requests per minute per API key (`RATE_LIMIT_MAX` in `src/config.ts`).
+Per API key (`RATE_LIMIT_MAX` in `src/config.ts`).
 ```
 
-**When was the last release?**
+**What's our current MRR?**
 
 ```
-DATA
+$12,400
 
-The last release tag is `v2.4.1`, pushed on 2026-03-08.
-```
-
-**What frameworks does this repo use?**
-
-```
-DATA
-
-Next.js 15, React 19, Prisma, Tailwind CSS, and Clerk.
+From the Stripe dashboard export in context.
 ```
 
 **What's 15% of $48,000?**
 
 ```
-DATA
-
-15% of $48,000 is $7,200.
+$7,200
 ```
 
-**List the failing tests.**
+**When was the last release?**
 
 ```
-DATA
+2026-03-08
 
-Three tests failed: `auth.test.ts` (session expiry), `billing.test.ts` (proration), `api.test.ts` (rate limit header).
+Last release tag: `v2.4.1`.
+```
+
+**How many frameworks does this repo use?**
+
+```
+5
+
+Next.js, React, Prisma, Tailwind CSS, Clerk.
+```
+
+**How long did CI take?**
+
+```
+4m 12s
+
+Latest `main` run passed.
 ```
 
 ---
 
-### I DON'T KNOW — insufficient evidence
+### I don't know, but I'll know it by X
+
+Bare "I don't know" is not allowed. Commit to when you'll know.
 
 **Will my SaaS get 1,000 customers?**
 
 ```
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY THE END OF THIS QUARTER
 
-There is insufficient evidence to predict that outcome. Useful next evidence: conversion rate, acquisition rate, retention, and willingness-to-pay from real customers.
+We need 8 more weeks of conversion, retention, and willingness-to-pay data from paying customers.
 ```
 
 **Should I launch this feature?**
 
 ```
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY NEXT FRIDAY
 
-The answer depends on whether the feature solves a painful enough problem for paying users. Test with existing users before a full build.
+Five user interviews with existing customers will show whether the problem is painful enough to ship.
 ```
 
 **Will we hit $1M ARR this year?**
 
 ```
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY THE Q2 BOARD DECK
 
-ARR trajectory requires current MRR, growth rate, churn, and pipeline data not present in this conversation.
+That deck will include current MRR, growth rate, churn, and pipeline — the inputs required to project ARR.
 ```
 
 **Is Redis faster than Memcached for our workload?**
 
 ```
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY WEDNESDAY
 
-That depends on value size, eviction pattern, and read/write ratio. Benchmark both with representative production traffic.
+We'll run both benchmarks with representative production traffic in staging.
 ```
 
-**Should we migrate from REST to GraphQL?**
+**Is it safe to delete this file?**
 
 ```
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY TOMORROW MORNING
 
-The right call depends on client query complexity, caching needs, and team expertise — not general industry preference.
+After the full test suite runs and we confirm no external API consumers depend on it.
 ```
 
-**Will OpenAI release GPT-6 next month?**
+**Did we ship billing last quarter?**
 
 ```
-I DON'T KNOW
+I DON'T KNOW, BUT I'LL KNOW IT BY END OF DAY
 
-Release timing for unreleased models is not publicly established.
+I'll check git tags, the changelog, and deployment logs for the billing feature merge date.
 ```
 
 ---
 
 ## Edge cases
 
-### Codebase questions (gather evidence first)
+### Uncomfortable with option 4?
 
-**Is this function used anywhere?** — search the repo before answering.
+That's the point. If you can't name when you'll know, you have work to do:
+
+- Who owns finding the answer?
+- What experiment or artifact produces it?
+- What date does that land?
+
+Don't answer until X is real.
+
+### Codebase questions — gather evidence first
+
+**Is this function used anywhere?**
 
 ```
 NO
 
-No references to `legacyParser()` appear outside its definition in `src/legacy/parser.ts`.
+No references to `legacyParser()` outside `src/legacy/parser.ts`.
 ```
 
-**Is it safe to delete this file?**
+### Multiple questions
 
 ```
-I DON'T KNOW
+YES
 
-No static callers were found, but dynamic imports, reflection, or external consumers cannot be ruled out without running the full test suite and checking API contracts.
-```
+PostgreSQL supports JSON natively.
 
-### Mixed questions
+I DON'T KNOW, BUT I'LL KNOW IT BY MONDAY
 
-**Is CI green and how long did it take?**
-
-```
-DATA
-
-The latest `main` CI run passed in 4m 12s.
+Customer count requires billing access we don't have in this session.
 ```
 
 ### Quoting others (hedging allowed in quotes only)
@@ -259,23 +282,9 @@ The latest `main` CI run passed in 4m 12s.
 **What did the investor say about runway?**
 
 ```
-DATA
+9-12 months
 
-The investor said: "You probably have 9–12 months of runway if burn stays flat." That is their stated view, not an established fact about actual runway.
-```
-
-### Multiple questions
-
-Answer each with its own block:
-
-```
-YES
-
-PostgreSQL supports JSON natively.
-
-I DON'T KNOW
-
-Customer count cannot be determined without access to your billing or analytics system.
+The investor's words: "You probably have 9–12 months of runway if burn stays flat." That is their view, not an established fact.
 ```
 
 ---
@@ -284,17 +293,16 @@ Customer count cannot be determined without access to your billing or analytics 
 
 | Request | Behavior |
 |---------|----------|
-| "Write a React component for a login form" | Normal implementation — no state label |
+| "Write a React login form" | Normal implementation |
 | "Brainstorm 10 startup ideas" | Normal brainstorming |
-| "Refactor this function" | Normal refactor |
-| "Is this function buggy?" | **Four Answers applies** → YES/NO/DATA/I DON'T KNOW |
-| "How many users signed up today?" | **Four Answers applies** → DATA or I DON'T KNOW |
+| "Is this function buggy?" | **Four Answers applies** |
+| "How many users signed up today?" | **A number** or **I don't know by X** |
 
 ---
 
 ## Anti-hedging word list
 
-These words must not replace a committed state in **your** conclusion:
+These must not replace a committed answer:
 
 `maybe` · `perhaps` · `probably` · `likely` · `unlikely` · `potentially` · `could` · `might` · `seems` · `appears` · `I think` · `I believe` · `arguably` · `generally` · `usually`
 
@@ -304,11 +312,16 @@ These words must not replace a committed state in **your** conclusion:
 
 ```bash
 python3 scripts/validate.py <<'EOF'
-YES
+37
 
-PostgreSQL has native JSON support.
+Active customers.
 EOF
-# → OK
+
+python3 scripts/validate.py <<'EOF'
+I DON'T KNOW, BUT I'LL KNOW IT BY FRIDAY
+
+After the cohort review.
+EOF
 ```
 
 ---
