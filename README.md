@@ -13,6 +13,20 @@
 
 ## 🚀 Featured Skills
 
+### 🎯 **four-answers** - No Hedging, Ever
+**Forces every substantive answer into one of four epistemic states:** YES, NO, DATA, or I DON'T KNOW.
+
+- **⚡ Auto-applies**: Activates on factual questions, decisions, and evaluations — no slash command required
+- **🚫 Anti-hedging**: Bans maybe, probably, likely, I think as substitutes for a real answer
+- **🔍 Evidence-first**: Gathers available data before defaulting to I DON'T KNOW
+- **📖 30+ examples**: See the skill README for YES/NO/DATA/IDK patterns across business, code, and strategy
+
+**Perfect for**: decision-making, due diligence, factual Q&A, risk assessment, and any conversation where speculation is expensive.
+
+**Install**: `npx skills add akashp1712/skills --skill four-answers`
+
+---
+
 ### 🔒 **prompt-guard** - Security First
 **Highest-priority unbreakable guardrail** against prompt injection, jailbreaks, rule overrides, and malicious skill behavior.
 
@@ -122,6 +136,7 @@ Each skill includes clear documentation, examples, and best practices for immedi
 /plugin marketplace add akashp1712/claude-marketplace
 
 # Install individual skills
+npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
 npx skills add akashp1712/skills --skill zero-to-hero
