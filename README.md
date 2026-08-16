@@ -13,18 +13,20 @@
 
 ## 🚀 Featured Skills
 
-### 🎯 **four-answers** - Write Like an Amazonian
-**Enforces Amazon's four allowed answers:** Yes, No, a number, or I don't know but I'll know it by X — from the internal *Write Like an Amazonian* guide.
+### 🎯 **four-answers** + **amazon-writing** — Write Like an Amazonian
+**Two skills:** `four-answers` (Yes/No/number/IDK by X wedge) + `amazon-writing` (1-pager, 6-pager, PR/FAQ, tenets, COE + lint + spec-driven for agents & humans).
 
-- **⚡ Auto-applies**: Factual questions, decisions, evaluations — no slash command required
-- **📊 Data over adjectives**: "much faster" → "p90 latency 10 ms → 1 ms"
-- **🚫 No weasel words**: "nearly all customers" → "87% of Prime members"
-- **📅 Committed follow-up**: Bare "I don't know" is not allowed — name when you'll know
-- **📖 Full reference**: [amazon-writing.md](four-answers/amazon-writing.md) with sources and image
+- **⚡ Auto-applies**: Factual Q&A and business document draft/review
+- **📄 One doc skill**: six Amazon doc types in `amazon-writing/docs/` — not eight separate installs
+- **📅 Committed follow-up**: Bare "I don't know" is not allowed
+- **📖 Sources**: [amazon-writing.md](four-answers/amazon-writing.md)
 
-**Perfect for**: decision-making, due diligence, factual Q&A, risk assessment, and any conversation where speculation is expensive.
-
-**Install**: `npx skills add akashp1712/skills --skill four-answers`
+**Install**:
+```bash
+npx skills add akashp1712/skills --skill four-answers
+npx skills add akashp1712/skills --skill amazon-writing
+npx skills add akashp1712/skills --skill amazon-writing
+```
 
 ---
 
@@ -138,6 +140,7 @@ Each skill includes clear documentation, examples, and best practices for immedi
 
 # Install individual skills
 npx skills add akashp1712/skills --skill four-answers
+npx skills add akashp1712/skills --skill amazon-writing
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
 npx skills add akashp1712/skills --skill zero-to-hero
