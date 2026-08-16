@@ -13,13 +13,14 @@
 
 ## 🚀 Featured Skills
 
-### 🎯 **four-answers** - Bezos's Four Answers
-**Forces every substantive answer into Jeff Bezos's four allowed responses:** Yes, No, a number, or I don't know but I'll know it by X.
+### 🎯 **four-answers** - Write Like an Amazonian
+**Enforces Amazon's four allowed answers:** Yes, No, a number, or I don't know but I'll know it by X — from the internal *Write Like an Amazonian* guide.
 
-- **⚡ Auto-applies**: Activates on factual questions, decisions, and evaluations — no slash command required
-- **🚫 Anti-hedging**: Bans maybe, probably, likely, I think as substitutes for a real answer
-- **📅 Committed uncertainty**: Bare "I don't know" is not allowed — name when you'll know
-- **📖 30+ examples**: See the skill README for Yes/No/number/IDK-by-X patterns across business, code, and strategy
+- **⚡ Auto-applies**: Factual questions, decisions, evaluations — no slash command required
+- **📊 Data over adjectives**: "much faster" → "p90 latency 10 ms → 1 ms"
+- **🚫 No weasel words**: "nearly all customers" → "87% of Prime members"
+- **📅 Committed follow-up**: Bare "I don't know" is not allowed — name when you'll know
+- **📖 Full reference**: [amazon-writing.md](four-answers/amazon-writing.md) with sources and image
 
 **Perfect for**: decision-making, due diligence, factual Q&A, risk assessment, and any conversation where speculation is expensive.
 

@@ -27,7 +27,8 @@ IDK_BY_X_PATTERN = re.compile(
 HEDGING_PATTERNS = re.compile(
     r"\b("
     r"maybe|perhaps|probably|likely|unlikely|potentially|"
-    r"could|might|seems|appears|arguably|generally|usually"
+    r"could|might|seems|appears|arguably|generally|usually|"
+    r"nearly all|significantly|substantially|dramatically"
     r")\b",
     re.IGNORECASE,
 )

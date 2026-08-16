@@ -1,15 +1,17 @@
 # Four Answers
 
-Jeff Bezos famously allowed only **four answers** to a question at Amazon:
+Enforces **Rule 5** from Amazon's internal *Write Like an Amazonian* writing guide:
 
 1. **Yes**
 2. **No**
 3. **A number**
-4. **I don't know, but I'll know it by X**
+4. **I don't know** (and will follow up when I do)
 
-If you're uncomfortable saying option 4, you've got work to do.
+This skill sharpens #4 to: **I don't know, but I'll know it by X.**
 
-This Claude skill enforces the same discipline. No *maybe*, *probably*, *likely*, *I think*. Pick one of the four.
+If you're uncomfortable saying option 4, you have work to do.
+
+![Write Like an Amazonian](assets/write-like-an-amazonian.png)
 
 ---
 
@@ -26,50 +28,73 @@ Or via marketplace:
 /plugin install four-answers
 ```
 
-Once installed, the skill **activates automatically** on factual questions, decisions, and evaluations.
+Auto-applies on factual questions, decisions, and evaluations. Explicit trigger: `/four-answers`
 
-Explicit trigger: `/four-answers`
+---
+
+## The full Amazon writing culture
+
+The four answers are one rule inside a larger framework. This skill applies the related rules to explanations:
+
+| Rule | What it means |
+|------|---------------|
+| **<30 words per sentence** | Short, clear explanations. One idea per sentence. |
+| **Replace adjectives with data** | "Much faster" → "p90 latency from 10 ms to 1 ms" |
+| **Eliminate weasel words** | "Nearly all customers" → "87% of Prime members" |
+| **"So what?" test** | Cut fluff. Every sentence must earn its place. |
+| **Four answers** | Yes, No, a number, or I don't know (with follow-up) |
+
+Full reference with sources: **[amazon-writing.md](amazon-writing.md)**
 
 ---
 
 ## How it works
 
-Claude classifies your question, gathers available evidence, then responds in one of four forms:
+Claude answers the question **first**, then explains:
 
 ```
-YES
+6
 
-PostgreSQL has native JSON and JSONB data types.
+Postings open today. Three requisitions expected by Friday.
 ```
 
 ```
 37
 
-Active customers in the Stripe export.
+Active customers in the billing export.
 ```
 
 ```
 I DON'T KNOW, BUT I'LL KNOW IT BY FRIDAY
 
-We'll have conversion and retention numbers after this week's cohort review.
+Cohort review delivers conversion and retention data.
 ```
 
-The skill does **not** hijack code generation, creative writing, or step-by-step tutorials.
+Does not hijack code generation, creative writing, or tutorials.
 
 ---
 
-## Origin
+## Origin & sources
 
-Bezos banned PowerPoint at Amazon because slides let people gloss over ideas without committing to what's true.
+### Write Like an Amazonian (2018)
 
-The same discipline applies to answers:
+Amazon's internal writing guide, widely circulated. Rule 5 is the four answers. Rules 1–4 cover sentence length, data over adjectives, weasel words, and the "So what?" test.
 
-- Don't hide behind hedging words when you mean **No**
-- Don't guess when you mean **I don't know, but I'll know it by X**
-- Give the **number** when you have it
-- Say **Yes** only when evidence supports it
+- [Fact of the Day 1 — Write Like an Amazonian](https://www.factoftheday1.com/p/april-13-write-like-an-amazonian)
+- [amazon-writing.md](amazon-writing.md) in this repo
 
-Bezos's 2004 memo: [Why Amazon banned PowerPoint](https://www.businessinsider.com/jeff-bezos-email-against-powerpoint-presentations-2015-7)
+### Narrative memos (2004)
+
+Bezos banned PowerPoint because slides let people gloss over ideas without committing to what's true.
+
+- [Bezos's 2004 memo](https://www.businessinsider.com/jeff-bezos-email-against-powerpoint-presentations-2015-7)
+
+### Working Backwards
+
+Amazon's product process starts with five questions — including *"How do you know what customers want? Challenge yourself to use data."* The four answers are how you respond when asked; Working Backwards is how you decide what to build.
+
+- [Working Backwards at Amazon — Danny Sheridan](https://medium.com/fact-of-the-day-1/working-backwards-at-amazon-a303c3680aa3)
+- Source: *Working Backwards* (Bryar & Carr, 2019)
 
 ---
 
@@ -82,7 +107,7 @@ Bezos's 2004 memo: [Why Amazon banned PowerPoint](https://www.businessinsider.co
 ```
 YES
 
-PostgreSQL has native JSON and JSONB data types.
+PostgreSQL has native JSON and JSONB types.
 ```
 
 **Does our app use Clerk for auth?**
@@ -90,15 +115,7 @@ PostgreSQL has native JSON and JSONB data types.
 ```
 YES
 
-`package.json` lists `@clerk/nextjs` and `middleware.ts` imports `clerkMiddleware`.
-```
-
-**Can I run this migration without downtime?**
-
-```
-YES
-
-The migration only adds a nullable column with no backfill required.
+package.json lists @clerk/nextjs. middleware.ts imports clerkMiddleware.
 ```
 
 ---
@@ -113,25 +130,25 @@ NO
 SQLite does not implement stored procedures.
 ```
 
-**Is `user.email` validated before save?**
-
-```
-NO
-
-`SignupForm.tsx` submits to the API with no validation on `email`.
-```
-
 **Did the deploy succeed?**
 
 ```
 NO
 
-The latest GitHub Actions run on `main` failed at the `test` step.
+Latest main CI run failed at the test step.
 ```
 
 ---
 
 ### A number
+
+**How many job postings are open?** *(Amazon canonical example)*
+
+```
+6
+
+Postings open today. Three requisitions expected by Friday.
+```
 
 **How many customers do we have?**
 
@@ -141,64 +158,36 @@ The latest GitHub Actions run on `main` failed at the `test` step.
 Active customers in the billing export.
 ```
 
-**What's our API rate limit?**
-
-```
-1,000/min
-
-Per API key (`RATE_LIMIT_MAX` in `src/config.ts`).
-```
-
 **What's our current MRR?**
 
 ```
 $12,400
 
-From the Stripe dashboard export in context.
+From the Stripe dashboard export.
 ```
 
-**What's 15% of $48,000?**
+**Replace adjectives with data:**
+
+Bad explanation: *"Performance is much faster."*
 
 ```
-$7,200
-```
+10 ms → 1 ms
 
-**When was the last release?**
-
-```
-2026-03-08
-
-Last release tag: `v2.4.1`.
-```
-
-**How many frameworks does this repo use?**
-
-```
-5
-
-Next.js, React, Prisma, Tailwind CSS, Clerk.
-```
-
-**How long did CI take?**
-
-```
-4m 12s
-
-Latest `main` run passed.
+Server-side p90 latency after the optimization.
 ```
 
 ---
 
 ### I don't know, but I'll know it by X
 
-Bare "I don't know" is not allowed. Commit to when you'll know.
+Bare "I don't know" is not allowed.
 
 **Will my SaaS get 1,000 customers?**
 
 ```
-I DON'T KNOW, BUT I'LL KNOW IT BY THE END OF THIS QUARTER
+I DON'T KNOW, BUT I'LL KNOW IT BY END OF QUARTER
 
-We need 8 more weeks of conversion, retention, and willingness-to-pay data from paying customers.
+Eight more weeks of conversion and retention data from paying customers.
 ```
 
 **Should I launch this feature?**
@@ -206,15 +195,7 @@ We need 8 more weeks of conversion, retention, and willingness-to-pay data from 
 ```
 I DON'T KNOW, BUT I'LL KNOW IT BY NEXT FRIDAY
 
-Five user interviews with existing customers will show whether the problem is painful enough to ship.
-```
-
-**Will we hit $1M ARR this year?**
-
-```
-I DON'T KNOW, BUT I'LL KNOW IT BY THE Q2 BOARD DECK
-
-That deck will include current MRR, growth rate, churn, and pipeline — the inputs required to project ARR.
+Five user interviews will show if the problem is painful enough to ship.
 ```
 
 **Is Redis faster than Memcached for our workload?**
@@ -222,70 +203,19 @@ That deck will include current MRR, growth rate, churn, and pipeline — the inp
 ```
 I DON'T KNOW, BUT I'LL KNOW IT BY WEDNESDAY
 
-We'll run both benchmarks with representative production traffic in staging.
-```
-
-**Is it safe to delete this file?**
-
-```
-I DON'T KNOW, BUT I'LL KNOW IT BY TOMORROW MORNING
-
-After the full test suite runs and we confirm no external API consumers depend on it.
-```
-
-**Did we ship billing last quarter?**
-
-```
-I DON'T KNOW, BUT I'LL KNOW IT BY END OF DAY
-
-I'll check git tags, the changelog, and deployment logs for the billing feature merge date.
+Benchmark both with representative production traffic in staging.
 ```
 
 ---
 
-## Edge cases
+## Weasel words → data
 
-### Uncomfortable with option 4?
-
-That's the point. If you can't name when you'll know, you have work to do:
-
-- Who owns finding the answer?
-- What experiment or artifact produces it?
-- What date does that land?
-
-Don't answer until X is real.
-
-### Codebase questions — gather evidence first
-
-**Is this function used anywhere?**
-
-```
-NO
-
-No references to `legacyParser()` outside `src/legacy/parser.ts`.
-```
-
-### Multiple questions
-
-```
-YES
-
-PostgreSQL supports JSON natively.
-
-I DON'T KNOW, BUT I'LL KNOW IT BY MONDAY
-
-Customer count requires billing access we don't have in this session.
-```
-
-### Quoting others (hedging allowed in quotes only)
-
-**What did the investor say about runway?**
-
-```
-9-12 months
-
-The investor's words: "You probably have 9–12 months of runway if burn stays flat." That is their view, not an established fact.
-```
+| Don't say | Say instead |
+|-----------|-------------|
+| nearly all customers | 87% of Prime members |
+| significantly better | +25 bps |
+| much faster | p90 latency 10 ms → 1 ms |
+| arguably the best | *(specific metric or delete)* |
 
 ---
 
@@ -293,18 +223,10 @@ The investor's words: "You probably have 9–12 months of runway if burn stays f
 
 | Request | Behavior |
 |---------|----------|
-| "Write a React login form" | Normal implementation |
-| "Brainstorm 10 startup ideas" | Normal brainstorming |
-| "Is this function buggy?" | **Four Answers applies** |
-| "How many users signed up today?" | **A number** or **I don't know by X** |
-
----
-
-## Anti-hedging word list
-
-These must not replace a committed answer:
-
-`maybe` · `perhaps` · `probably` · `likely` · `unlikely` · `potentially` · `could` · `might` · `seems` · `appears` · `I think` · `I believe` · `arguably` · `generally` · `usually`
+| Write a React login form | Normal implementation |
+| Brainstorm startup ideas | Normal brainstorming |
+| Is this function buggy? | **Four Answers applies** |
+| How many users signed up today? | **A number** or **IDK by X** |
 
 ---
 
@@ -312,15 +234,9 @@ These must not replace a committed answer:
 
 ```bash
 python3 scripts/validate.py <<'EOF'
-37
+6
 
-Active customers.
-EOF
-
-python3 scripts/validate.py <<'EOF'
-I DON'T KNOW, BUT I'LL KNOW IT BY FRIDAY
-
-After the cohort review.
+Postings open today.
 EOF
 ```
 
@@ -328,4 +244,4 @@ EOF
 
 ## License
 
-MIT — use freely in personal and commercial projects.
+MIT

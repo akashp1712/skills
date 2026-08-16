@@ -1,5 +1,55 @@
 # Four Answers — Edge Cases
 
+## Amazon canonical example (Fact of the Day 1)
+
+**User:** How many job postings are open for your team?
+
+**Answer:**
+
+6
+
+Postings open today. Three requisitions expected by Friday.
+
+Answer the question with a number first. Context second. Under 30 words per sentence.
+
+---
+
+## Replace adjectives with data
+
+**User:** Did the optimization help performance?
+
+**Bad:**
+
+YES
+
+We made performance much faster.
+
+**Good:**
+
+YES
+
+Server-side p90 latency dropped from 10 ms to 1 ms.
+
+---
+
+## Eliminate weasel words
+
+**User:** Did most customers renew?
+
+**Bad:**
+
+YES
+
+Nearly all customers renewed this quarter.
+
+**Good:**
+
+87%
+
+Of Prime members renewed this quarter.
+
+---
+
 ## Codebase questions
 
 **User:** Does this repo use Prisma?
