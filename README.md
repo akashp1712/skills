@@ -29,16 +29,19 @@ npx skills add akashp1712/skills --skill amazon-writing
 
 ---
 
-### 🧭 **team-of-one** — Amazon Mechanisms for Solo Builders
-**Amazon keeps quality high with mechanisms, not willpower** — the bar raiser, one-way vs two-way doors, tenets, the COE. Every one assumes a team. This ports them to **scale = 1**.
+### 🧭 **team-of-one** — Amazon Mechanisms for Solopreneur Efficiency
+> *"Good intentions don't work. Mechanisms do."* — an old adage at Amazon
 
-- **🔁 Re-entry**: Boot and Landing — stop losing the thread between Tuesday and Saturday
-- **🚦 Bar raiser**: a reviewer with a real veto, written before you're attached to the work
-- **🚪 Doors**: 10 minutes on reversible calls, a 1-pager on irreversible ones
-- **🎯 Focus**: exactly one `PRIMARY`, pre-committed kill gates, no silent pausing
+You can't out-discipline a team. You can out-mechanism one. Five mechanisms, each killing a specific waste:
+
+- **⚡ Velocity**: decide at 70% info; 10 min on reversible calls, a 1-pager on irreversible ones
+- **🧵 Single-thread**: two open threads run at ~35% each — the missing 30% is reload cost
+- **🔁 Re-entry**: recover context in 2 minutes instead of 90
+- **📊 Input metrics**: measure what you control, not MRR you can't move
+- **♻️ Compounding**: a bar written before you're attached; corrections that are mechanisms, not resolutions
 - **📁 Real state**: maintains `.mechanisms/` files, not advice
 
-**Perfect for**: employed builders shipping on nights and weekends.
+Sourced from Bezos's 2015/2016 shareholder letters and *Working Backwards*.
 
 **Install**: `npx skills add akashp1712/skills --skill team-of-one`
 

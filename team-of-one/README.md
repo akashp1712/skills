@@ -1,12 +1,12 @@
 # Team of One
 
-**Amazon's operating mechanisms, ported to one person with a day job.**
+> **"Good intentions don't work. Mechanisms do."** — an old adage at Amazon
 
-Amazon keeps quality high with mechanisms, not willpower — the bar raiser, one-way and two-way doors, tenets, the COE, Working Backwards. Every one of them assumes a team.
+When something went wrong at Amazon, Bezos's question was never "who messed up." It was **"Do we have a mechanism in place so it doesn't happen again?"** The reasoning: people already had good intentions when the problem happened, so intentions were not the variable worth changing.
 
-You have no reviewer, no PM pushing back on a mushy plan, and no one asking whether this is the most important thing. AI made generating work free, which made judgment the scarce part.
+A solopreneur has more good intentions than anyone and no mechanisms at all.
 
-This skill ports those mechanisms to **scale = 1**.
+You cannot out-discipline a team. You can out-mechanism one.
 
 ---
 
@@ -16,86 +16,68 @@ This skill ports those mechanisms to **scale = 1**.
 npx skills add akashp1712/skills --skill team-of-one
 ```
 
-Then scaffold the state files in your project:
+Scaffold the state files in your project:
 
 ```bash
 python3 ~/.claude/skills/team-of-one/scripts/init.py
 ```
 
-Auto-applies when you resume after a gap, before you ship, or when you are spread across too many projects. Explicit trigger: `/team-of-one`
+Auto-applies when a decision is being over-deliberated, when you resume after time away, before shipping, or when tracking progress. Explicit trigger: `/team-of-one`
 
 ---
 
-## The five mechanisms
+## Five mechanisms, each targeting a specific waste
 
-| Mechanism | The problem it solves | Guide |
-|-----------|----------------------|-------|
-| **Re-entry** | You lose the thread between Tuesday and Saturday | [docs/re-entry.md](docs/re-entry.md) |
-| **Bar raiser** | Nobody tells you your work isn't good enough | [docs/bar-raiser.md](docs/bar-raiser.md) |
-| **Doors** | Three weeks on a framework, ten minutes on public pricing | [docs/doors.md](docs/doors.md) |
-| **Focus** | Six projects, one person, all of them 60% done | [docs/focus.md](docs/focus.md) |
-| **Retro** | The same lesson learned four times | [docs/retro.md](docs/retro.md) |
+| Waste | Mechanism | Amazon origin |
+|-------|-----------|---------------|
+| Deliberating reversible decisions | [**Velocity**](docs/velocity.md) | 2015 + 2016 shareholder letters |
+| Splitting attention across threads | [**Single-thread**](docs/single-thread.md) | Single-threaded leadership |
+| Rebuilding context after a gap | [**Re-entry**](docs/re-entry.md) | Written handoff culture |
+| Optimizing numbers you can't move | [**Input metrics**](docs/input-metrics.md) | WBR, *Working Backwards* ch. 6 |
+| Doing the same work twice | [**Compounding**](docs/compounding.md) | Bar raiser, COE |
 
-```
-BOOT ──▶ DOORS ──▶ (work) ──▶ BAR RAISER ──▶ LANDING
-  ▲                                              │
-  └──────────── RETRO ◀── FOCUS ◀────────────────┘
-                (weekly)   (monthly)
-```
+---
+
+## What it actually does
+
+**Decide at 70%.** Bezos: *"Most decisions should probably be made with somewhere around 70% of the information you wish you had. If you wait for 90%, in most cases, you're probably being slow… being wrong may be less costly than you think, whereas being slow is going to be expensive for sure."* The skill classifies your decision as a one-way or two-way door and refuses to write a comparison matrix for a reversible one.
+
+**Beat the exhaustion default.** In the 2016 letter Bezos notes that without escalation, the default dispute resolution mechanism is exhaustion — *"whoever has more stamina carries the decision."* Solo, both parties are you, and the winner is usually the anxious voice at midnight. Writing the decision down terminates the loop.
+
+**One thread at a time.** Dave Limp's line, quoted in *Working Backwards*: *"The best way to fail at inventing something is by making it somebody's part-time job."* Two open threads don't run at 50% each — they run at about 35%, and the missing 30% is reload cost.
+
+**Measure inputs, not outputs.** You cannot move MRR directly. You can move "conversations with people in the target segment." Amazon's own selection metric started as *number of detail pages*, got gamed, and became *detail pages ready for two-day shipping*. Expect to refine yours two or three times.
+
+**Never solve the same problem twice.** A bar written before you're attached to the work, enforced when you are. A COE whose correction is a mechanism, never "be more careful."
 
 ---
 
 ## It maintains files, not vibes
 
-A mechanism has a tool, an owner, and an inspection cadence. Advice has none of those, which is why advice does not survive contact with a tired Saturday morning.
-
-So this skill reads and writes real files at your repo root:
+A mechanism has a tool, an owner, and an inspection cadence. Advice has none of those, which is why advice doesn't survive contact with a tired Saturday.
 
 ```
 .mechanisms/
 ├── RESUME.md      # where you left off — overwritten every session
 ├── DECISIONS.md   # append-only, with door type and what you ruled out
-├── BAR.md         # the quality bar, written before you're attached
-├── PORTFOLIO.md   # every project labeled PRIMARY / MAINTENANCE / PAUSED / KILLED
-└── LEARNINGS.md   # append-only, from retros and obituaries
+├── BAR.md         # what "done" means, written before you're attached
+├── METRICS.md     # three controllable inputs, reviewed weekly
+└── LEARNINGS.md   # append-only; every entry ends in a mechanism change
 ```
-
-Commit them. `RESUME.md` is the handoff between the version of you that has context and the version that doesn't.
 
 ---
 
-## The wedge: re-entry
+## The trap it's built to avoid
 
-A full-time founder closes the laptop and reopens it fourteen hours later with the stack still warm. You close it Tuesday night and reopen it Saturday morning, and the context is gone.
+Bezos, same 2016 letter, on process as proxy:
 
-The first chunk of every session goes to reconstructing what you already knew. On an eight-hour week that is the largest single line item, and it is pure loss, repeated every session.
+> "Good process serves you so you can serve customers. But if you're not watchful, the process can become the thing… You stop looking at outcomes and just make sure you're doing the process right."
 
-**Landing** costs five minutes at the end of a session, when context is free. **Boot** costs two minutes at the start, when context is expensive.
+A solopreneur with immaculate `.mechanisms/` files and nothing shipped has made the process a proxy. That's worse than having no mechanisms, because it feels like work.
 
-```
-BOOT · evercall · feat/missed-call-sms · 4 days since last session
+So the skill has hard guardrails: every mechanism must cost less than the waste it removes, you adopt one at a time, shipping beats logging, and **any mechanism that hasn't changed a decision in a month gets deleted.**
 
-Bet: missed call → booking SMS, end to end on staging
-Next: add status-callback handler at app/api/voice/status/route.ts
-      (file exists, empty — signature at route.ts:1-12)
-Closed: Twilio chosen; no booking UI this milestone
-Avoid: refactoring lib/sms.ts; OneCue is PAUSED
-Blocked: AU regulatory bundle, chase 08-21 (does not block today)
-
-Starting there?
-```
-
-Measure your own version: note the clock when you open the laptop and when you type the first real line of code. That gap, times your sessions per month, is what this is worth to you.
-
----
-
-## What it will not do
-
-It will not generate ideas, content, campaigns, or plans. There are excellent skills for that, including [show-me-the-money](https://github.com/iamzifei/show-me-the-money) for the full build-and-grow pipeline.
-
-Every mechanism here **removes work or closes a loop**. If one produces a longer to-do list than it started with, it ran wrong. Silence is the default.
-
-Notably, the bar raiser is allowed to tell you your work does not ship. If it never once says no, the mechanism is theater and you should delete it.
+Start with re-entry. Add the next only after the first pays for itself.
 
 ---
 
@@ -112,11 +94,10 @@ Notably, the bar raiser is allowed to tell you your work does not ship. If it ne
 
 ## Sources
 
-- Jeff Bezos, [1997 shareholder letter](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders) — one-way and two-way doors
+- Jeff Bezos, [2015 letter to shareholders](https://www.sec.gov/Archives/edgar/data/1018724/000119312516530910/d168744dex991.htm) — Type 1 / Type 2 decisions, one-way and two-way doors
+- Jeff Bezos, [2016 letter to shareholders](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders) — high-velocity decision making, the 70% rule, disagree and commit, escalation over exhaustion, process as proxy
+- Colin Bryar and Bill Carr, *Working Backwards* — mechanisms over good intentions, single-threaded leadership (ch. 3), input metrics and the WBR (ch. 6)
+- [First Round Review interview with Bryar and Carr](https://review.firstround.com/how-to-build-an-invention-machine-6-lessons-that-powered-amazons-success/) — "Do we have a mechanism in place so it doesn't happen again?"
 - Amazon's bar raiser program — separation of reviewer from owner, with veto
-- *Working Backwards*, Colin Bryar and Bill Carr — mechanisms over good intentions
-- *Write Like an Amazonian* (internal, c. 2018) — see [amazon-writing](../amazon-writing)
-
-Built by an ex-Amazonian shipping two products around a full-time engineering job. The mechanisms are the ones that survived contact with an eight-hour week.
 
 MIT licensed.

@@ -1,151 +1,137 @@
 ---
 name: team-of-one
-description: Amazon operating mechanisms ported to a solo builder shipping around a day job — re-entry after days away, a bar raiser with real veto power, one-way vs two-way door decisions, single-bet focus with pre-committed kill gates, and weekly retros. Maintains .mechanisms/ state files so decisions and context survive between short sessions. Auto-applies when resuming work after a gap, before shipping, when choosing between projects, or when spread across too many. Triggered by /team-of-one.
+description: Amazon's operating mechanisms adapted for a solo builder — decide at 70% information, classify one-way vs two-way doors, single-thread your attention, recover context fast after a gap, measure controllable inputs instead of lagging outputs, and never solve the same problem twice. Maintains .mechanisms/ state files so decisions and context persist between sessions. Auto-applies when a decision is being over-deliberated, when resuming after time away, before shipping, or when tracking progress. Triggered by /team-of-one.
 user_invocable: true
 ---
 
 # Team of One
 
-Amazon keeps quality high with **mechanisms**, not willpower: the bar raiser, the narrative review, the COE, tenets, one-way and two-way doors. Every one assumes a team.
+> "Good intentions don't work. Mechanisms do."
+> — an old adage at Amazon, cited throughout *Working Backwards*
 
-You are one person with a day job and eight hours a week. You have no reviewer, no PM pushing back on a mushy plan, and no one asking whether this is the most important thing. Generation is free now. Judgment is the scarce part.
+Amazon's answer to every recurring failure was never "try harder." When something went wrong, Bezos's question was: **"Do we have a mechanism in place so it doesn't happen again?"** The assumption was that people already had good intentions when the problem happened, so intentions were not the variable worth changing.
 
-This skill ports those mechanisms to **scale = 1**.
+A solopreneur has more good intentions than anyone and no mechanisms at all. That is the gap this skill closes.
 
-**Companions:** [amazon-writing](../amazon-writing/SKILL.md) for the document formats · [four-answers](../four-answers/SKILL.md) for answer discipline.
+You cannot out-discipline a team. You can out-mechanism one.
+
+**Companions:** [amazon-writing](../amazon-writing/SKILL.md) for document formats · [four-answers](../four-answers/SKILL.md) for answer discipline.
 
 ---
 
-## What makes this a mechanism, not advice
+## Where solo hours actually go
 
-A mechanism has a **tool, an owner, and an inspection cadence**. Advice has none of those, which is why it does not survive contact with a tired Saturday morning.
+Every mechanism here targets a specific, measurable waste. If a mechanism is not removing one of these, it should not be running.
 
-So this skill reads and writes real files in `.mechanisms/` at the repo root:
-
-| File | Written by | Read by | Lifecycle |
-|------|-----------|---------|-----------|
-| `RESUME.md` | Landing (end of session) | Boot (start of session) | Overwritten every session |
-| `DECISIONS.md` | Doors | Boot, Retro | Append-only |
-| `BAR.md` | You, once, before you are attached | Bar raiser | Rarely edited |
-| `PORTFOLIO.md` | Focus | Boot, Retro | Edited at triage |
-| `LEARNINGS.md` | Retro, COE | Focus, Doors | Append-only |
-
-Commit them. They are the only thing standing between Saturday-you and the ninety minutes you lose remembering what Tuesday-you decided.
-
-Scaffold with `python3 scripts/init.py` (see [scripts/init.py](scripts/init.py)), or create on first use.
-
-**If `.mechanisms/` does not exist and the user asks for a mechanism, offer to scaffold it first.** Do not silently invent state.
+| Waste | Mechanism | Amazon origin |
+|-------|-----------|---------------|
+| Deliberating reversible decisions | **Velocity** | 2015 + 2016 shareholder letters |
+| Re-deciding what you already decided | **Velocity** (`DECISIONS.md`) | Written culture |
+| Splitting attention across threads | **Single-thread** | Single-threaded leadership |
+| Rebuilding context after a gap | **Re-entry** | Written handoff |
+| Optimizing numbers you cannot move | **Input metrics** | WBR, *Working Backwards* ch. 6 |
+| Doing the same work twice | **Compounding** | Bar raiser, COE |
 
 ---
 
 ## Pick a mechanism
 
-Route on where the user is in the loop, not on what they literally typed.
-
 | Situation | Mechanism | Read |
 |-----------|-----------|------|
-| Opening the laptop after days away | **Boot** | [docs/re-entry.md](docs/re-entry.md) |
-| Stopping for the night | **Landing** | [docs/re-entry.md](docs/re-entry.md) |
-| About to decide something | **Doors** | [docs/doors.md](docs/doors.md) |
-| About to ship, merge, or publish | **Bar raiser** | [docs/bar-raiser.md](docs/bar-raiser.md) |
-| Too many projects, scattered, guilty | **Focus** | [docs/focus.md](docs/focus.md) |
-| End of week, or something broke | **Retro** | [docs/retro.md](docs/retro.md) |
+| Weighing a decision, stuck, researching | **Velocity** | [docs/velocity.md](docs/velocity.md) |
+| Several things half-open; nothing finishing | **Single-thread** | [docs/single-thread.md](docs/single-thread.md) |
+| Starting or ending a work session | **Re-entry** | [docs/re-entry.md](docs/re-entry.md) |
+| Tracking progress, or feeling like nothing works | **Input metrics** | [docs/input-metrics.md](docs/input-metrics.md) |
+| About to ship, or something broke | **Compounding** | [docs/compounding.md](docs/compounding.md) |
 
-If genuinely ambiguous, ask once: **booting, landing, deciding, shipping, triaging, or retro?**
-
----
-
-## Auto-apply triggers
-
-Apply without being asked when:
-
-- The session starts in a repo containing `.mechanisms/RESUME.md` → offer Boot in one line, do not dump the whole file unprompted
-- The user says "where was I," "what was I doing," "picking this back up," "haven't touched this in weeks"
-- The user is about to deploy, publish, announce, or take money → Bar raiser
-- The user is weighing an irreversible move (pricing, domain, public API, brand, first paying customer) → Doors, one-way path
-- The user mentions a third or fourth project, or says "I should also build" → Focus
-- Something broke in production, or a week ended → Retro
-
-**Do not apply when:** the user is mid-flow on a well-defined coding task. Interrupting focused work to ask about mechanisms is the exact failure this skill exists to prevent. Silence is the default.
+If ambiguous, ask once: **deciding, focusing, resuming, measuring, or shipping?**
 
 ---
 
-## The loop
+## State files
 
-```
-BOOT ──▶ DOORS ──▶ (work) ──▶ BAR RAISER ──▶ LANDING
-  ▲                                              │
-  └──────────── RETRO ◀── FOCUS ◀────────────────┘
-                (weekly)   (monthly or when scattered)
-```
+A mechanism needs a tool, an owner, and an inspection cadence. Advice has none of those. So this skill reads and writes real files in `.mechanisms/` at the repo root:
 
-Boot and Landing run every session. Doors and Bar raiser run per decision and per ship. Focus and Retro run on a cadence, not on feeling.
+| File | Written by | Read by |
+|------|-----------|---------|
+| `RESUME.md` | End of session | Start of session |
+| `DECISIONS.md` | Velocity | Re-entry, weekly review |
+| `BAR.md` | You, once, in advance | Ship time |
+| `METRICS.md` | Weekly review | Weekly review |
+| `LEARNINGS.md` | COE, weekly review | Velocity, ship time |
+
+Scaffold with `python3 scripts/init.py`. Commit them.
+
+**If `.mechanisms/` does not exist, offer to scaffold before inventing state.**
 
 ---
 
 ## Operating rules
 
-These apply across all five mechanisms.
+### 1. Decide at 70%
 
-### 1. The next action must be startable in five minutes
+> "Most decisions should probably be made with somewhere around 70% of the information you wish you had. If you wait for 90%, in most cases, you're probably being slow… being wrong may be less costly than you think, whereas being slow is going to be expensive for sure."
+> — Bezos, 2016 letter
 
-Part-time builders need momentum before the window closes. "Continue work on auth" is not an action. "Add the redirect at `middleware.ts:42`" is.
+The corollary matters as much as the rule: 70% only works if you are **good at course-correcting**. Speed and reversibility are one mechanism, not two.
 
-### 2. Ruled-out is as valuable as decided
+### 2. Match process weight to reversibility
 
-Record what you rejected and why. Without it you will re-litigate the same choice every third session, which is the most common way eight hours becomes zero.
+Two-way door: decide now, log one line, move. One-way door: write it down, sleep on it. Using the heavy process on everything produces "slowness, unthoughtful risk aversion, failure to experiment sufficiently."
 
-### 3. Pre-commit the kill criterion while you are still objective
+### 3. One thread at a time
 
-Write the gate before you start, when you have no sunk cost. Enforce it later, when you do.
+> "The best way to fail at inventing something is by making it somebody's part-time job."
+> — Dave Limp, Amazon SVP of Devices, quoted in *Working Backwards*
 
-### 4. Name the state of every project in writing
+### 4. Measure inputs, not outputs
 
-`PRIMARY` / `MAINTENANCE` / `PAUSED` / `KILLED`. Exactly one project may be `PRIMARY`. An unnamed project is a guilt generator.
+Revenue, followers, and MRR are lagging outputs you cannot move directly. Measure the controllable inputs that produce them.
 
-### 5. Four answers on every substantive question
+### 5. Never solve the same problem twice
 
-**Yes**, **No**, **a number**, or **I don't know, but I'll know by X**. This applies to the agent too. "It looks good" is not a bar-raiser verdict.
+Anything that broke gets a mechanism, not a resolution to be more careful.
 
-### 6. Silence is the default
+### 6. Answer in four answers
 
-Do not generate work. Every mechanism here removes options or closes loops. If a mechanism produces a longer to-do list than it started with, it ran wrong.
+**Yes**, **No**, **a number**, or **I don't know, but I'll know by X**. Applies to the agent too. "Looks good" is not a verdict.
 
 ---
 
-## Output discipline
+## The trap this skill must avoid
 
-Every mechanism ends with a **written artifact and one decision** — never a summary of feelings.
+> "Good process serves you so you can serve customers. But if you're not watchful, the process can become the thing… You stop looking at outcomes and just make sure you're doing the process right."
+> — Bezos, 2016 letter, on process as proxy
 
-| Mechanism | Ends with |
-|-----------|-----------|
-| Boot | The one next action, startable now |
-| Landing | `RESUME.md` overwritten |
-| Doors | A logged decision + door type + deliberation spent |
-| Bar raiser | `SHIPS` / `DOESN'T SHIP` / `SHIPS AFTER [fix] BY [date]` |
-| Focus | Exactly one `PRIMARY`, everything else explicitly labeled |
-| Retro | A changed mechanism, or an explicit "no change" |
+A solopreneur with immaculate `.mechanisms/` files and nothing shipped has made the process a proxy. That is a worse failure than having no mechanisms, because it feels like work.
 
-If you cannot produce the artifact, say what is missing. Do not produce a vaguer version of it.
+Guardrails:
+
+- **Every mechanism must cost less than the waste it removes.** If Landing takes twenty minutes, it is broken.
+- **Never run more than one new mechanism at a time.** Adopt one, confirm it pays, then add the next.
+- **If a mechanism has not changed a decision in a month, delete it.**
+- **Shipping beats logging.** When they conflict, ship and log afterward.
+
+The output of this skill is more finished work, not better documentation of unfinished work.
 
 ---
 
 ## Anti-patterns
 
-- **Status reports to an imaginary manager.** `RESUME.md` is a note to yourself in the second person, with file paths.
-- **A bar raiser that never says no.** If the verdict is always `SHIPS`, the mechanism is theater. Delete it or make the bar real.
-- **Retros that produce feelings.** A retro either changes a mechanism or changes nothing, and says which.
-- **Three weeks on a two-way door.** Deliberation must be proportional to reversibility.
-- **Silent pausing.** A project you stopped without writing `PAUSED` becomes background guilt that taxes the project you are actually working on.
-- **Scaffolding all five mechanisms on day one.** Start with re-entry. Add the next only after the first earns its keep.
+- **Researching a two-way door.** Comparison matrices for reversible choices are the most expensive habit in solo building.
+- **Waiting for 90%.** The missing 20% usually does not exist and would not change the call.
+- **Tracking MRR daily.** It is a lagging output. Watching it more often does not move it and reliably lowers morale.
+- **Re-opening closed decisions.** It feels like thinking. It is re-thinking, and it is why weeks disappear.
+- **Post-mortems that end in resolutions.** "Be more careful next time" is the definition of a good intention.
+- **Running all five mechanisms in week one.** Start with re-entry.
 
 ---
 
 ## Final check
 
-- Did this remove work rather than add it?
-- Is there a written artifact in `.mechanisms/`?
-- Is the next action startable in five minutes?
-- Does exactly one project say `PRIMARY`?
-- Did any substantive answer hedge instead of using the four answers?
-- Was the bar raiser allowed to say no?
+- Did this produce finished work, or documentation of unfinished work?
+- Was the decision made at 70%, or did it wait for 90%?
+- Was process weight matched to reversibility?
+- Is the metric something you can directly control?
+- Did anything that broke get a mechanism rather than a resolution?
+- Is there exactly one open thread?

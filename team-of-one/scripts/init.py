@@ -17,14 +17,13 @@ TODAY = date.today().isoformat()
 
 RESUME = f"""# Resume
 
-Last session: {TODAY} · Next window: TBD
-Project: TBD · Branch: TBD
+Last session: {TODAY} · Branch: TBD
 
-## The one bet
+## The one thread
 <the single outcome this session is buying>
 
 ## Next action (startable in 5 minutes)
-<file path, function, line number — could a stranger start this?>
+<file path, function, line — could a stranger start this without asking?>
 
 ## State of play
 - <what works, verified when>
@@ -41,26 +40,31 @@ Project: TBD · Branch: TBD
 
 ## Do not do this session
 - <the refactor you keep eyeing>
-- <the paused project>
+
+## Parked
+- <ideas that arrived mid-session — a list, not a branch>
 """
 
 DECISIONS = f"""# Decisions
 
-Append-only. Never edit or delete an entry — supersede it with a newer one.
-Type is `two-way` (reversible, 10 min budget) or `ONE-WAY` (write a 1-pager).
+Append-only. Never edit an entry — supersede it with a newer one.
+Type is `two-way` (reversible: decide in 10 min) or `ONE-WAY` (write a 1-pager).
+
+Decide at ~70% of the information you wish you had. Waiting for 90% is slow.
 
 ## {TODAY} · Started keeping this log
 Type: two-way · Deliberated: 0 min
 
 Undo cost: none.
 
-Ruled out: keeping decisions in my head (does not survive a week off).
+Ruled out: keeping decisions in my head — they do not survive a week away,
+so they get re-debated at full price.
 """
 
 BAR = """# Bar
 
-Written once, in advance, before there is code to defend.
-Changed only at Landing — never at ship time.
+Written in advance, before there is code to defend.
+Changed only in a separate session — never at ship time.
 
 ## Ship bar (anything a customer touches)
 - [ ] A stranger completes the core flow without asking me a question
@@ -72,50 +76,56 @@ Changed only at Landing — never at ship time.
 
 ## Merge bar (internal, no customer impact)
 - [ ] No TODO or commented-out block in the diff
-- [ ] If I read this in six weeks with no context, I would understand it
+- [ ] Readable in six weeks with no context
 - [ ] Nothing broke that used to work
 
-## Explicit non-bars
-These are allowed to be bad. Naming them stops perfectionism from
-masquerading as standards.
+## Explicitly allowed to be bad
+Naming these stops perfectionism from masquerading as standards.
 - Test coverage below 100%
 - Ugly internal code that works and is isolated
 - Missing admin tooling — I am the only admin
 """
 
-PORTFOLIO = """# Portfolio
+METRICS = """# Metrics
 
-Capacity: <hours>/week, after the day job. Use the last 4 weeks as evidence.
-Reviewed monthly. Exactly one project may be PRIMARY.
+Manage inputs, not outputs. An input qualifies only if you can change it
+this week by doing something specific, AND it plausibly moves the output.
 
-## PRIMARY · <project>
-<one line: what it is, for whom>
-Bet: <measurable outcome> by <date>.
-Kill gate: if <measurable condition> by <date>, drop to PAUSED and write
-the obituary. Set <today>, while I have no sunk cost.
+Output (confirm monthly, do not manage to): <e.g. paying customers>. Now: <n>.
 
-## MAINTENANCE · <project> (<n> hrs/mo)
-Maintenance means: <bounded list>. Nothing else.
+## Inputs (weekly, max 3)
+1. <controllable action> — target <n>/wk
+2. <controllable action> — target <n>/wk
+3. <controllable action> — target <n>/wk
 
-## PAUSED · <project>
-Resume condition: <a condition, not "when I have time">.
+Test each: could I hit this number without helping anyone? If yes, it is
+too crude — refine it.
 
-## KILLED
-- <project> (<date>) — see LEARNINGS.md
+Reviewed <day>, 15 minutes. Report variance only. Tactical, not strategic.
+
+## Log
+### week of <date>
+  <input 1>   n / target
+  <input 2>   n / target
+Variance worth discussing: <the one binding constraint>
+Action: <the one next thread>
 """
 
 LEARNINGS = """# Learnings
 
 Append-only. Every entry ends with a mechanism change, or it is just a loss.
 
-Sources: weekly retros, COEs, and obituaries for killed projects.
+The test for a correction: "be more careful next time" is a good intention,
+not a mechanism. Ask instead — what makes this impossible next time?
+
+Sources: COEs, weekly reviews, and anything a customer said that surprised you.
 """
 
 FILES = {
     "RESUME.md": RESUME,
     "DECISIONS.md": DECISIONS,
     "BAR.md": BAR,
-    "PORTFOLIO.md": PORTFOLIO,
+    "METRICS.md": METRICS,
     "LEARNINGS.md": LEARNINGS,
 }
 

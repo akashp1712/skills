@@ -1,159 +1,155 @@
-# Re-entry — Boot and Landing
+# Re-entry — recovering context in two minutes instead of ninety
 
-The mechanism that only matters when you are part-time.
+Every session you work on something, you built a mental model: which branch, what is half-done, what you already tried, what you decided and why. When the session ends, that model evaporates. The code persists. The model does not.
 
-A full-time founder closes the laptop and reopens it fourteen hours later with the stack still warm. You close it Tuesday night and reopen it Saturday morning. The code is unchanged and the context is gone.
+So the start of every session gets spent rebuilding it. That reconstruction produces nothing, and you pay it again every single time.
 
-So the first chunk of every session gets spent reconstructing what you already knew: which branch, what was half-done, what you tried that failed, what you decided and why. On an eight-hour week, that reconstruction is the single largest line item — and it is pure loss, repeated every session.
+It scales with the gap. A few hours away and most of the model survives. Several days and almost none of it does.
 
 **The fix is not better memory. It is refusing to end a session without writing the handoff.**
 
-Re-entry has two halves and they are asymmetric:
+Two halves, deliberately asymmetric:
 
-- **Landing** costs five minutes and is done when context is free, because you still have it
-- **Boot** costs two minutes and is done when context is expensive, because you have none
+- **Landing** costs five minutes at the end, when context is free — you already have it
+- **Boot** costs two minutes at the start, when context is expensive — you have none
 
-You are paying a cheap tax to avoid an expensive one. Landing is the half people skip, and skipping it is what makes Boot impossible.
+You pay a cheap tax to avoid an expensive one. Landing is the half people skip, and skipping it is exactly what makes Boot impossible.
 
 ---
 
 ## Landing (end of session, 5 minutes)
 
-Run this **before** you are tired, not after. When the window is closing, stop coding with five minutes left and land the plane. A clean landing is worth more than five more minutes of half-finished work, because half-finished work with no note is negative value — next session you will read it, not understand it, and possibly revert it.
+Run it **before** you are tired, not after. When the window is closing, stop working with five minutes left and land the plane.
 
-Overwrite `.mechanisms/RESUME.md` entirely. It is a snapshot, not a log. Things worth keeping permanently go to `DECISIONS.md` or `LEARNINGS.md`.
+A clean landing beats five more minutes of half-finished work. Unfinished work with no note is negative value — next session you will read it, fail to understand it, and possibly revert it.
+
+Overwrite `.mechanisms/RESUME.md` entirely. It is a snapshot, not a log. Durable things go to `DECISIONS.md` or `LEARNINGS.md`.
 
 ### Template
 
 ```markdown
 # Resume
 
-Last session: 2026-08-16 · Next window: Sat AM
-Project: evercall · Branch: feat/missed-call-sms
+Last session: 2026-08-16 · Branch: feat/checkout
 
-## The one bet
-Get a missed call to produce a booking SMS end to end on staging.
+## The one thread
+Get a test card to complete checkout and produce a receipt.
 
 ## Next action (startable in 5 minutes)
-Add the Twilio status-callback handler at `app/api/voice/status/route.ts`.
-The route file exists and is empty. Signature copied from `route.ts:1-12` of
-the inbound handler.
+Add the Stripe webhook handler at `app/api/stripe/route.ts`.
+File exists and is empty. Signature pattern at `app/api/health/route.ts:1-14`.
 
 ## State of play
-- Inbound webhook works on staging, verified with a real call Tuesday
-- SMS send works in isolation (`lib/sms.ts`), never wired to the call event
-- Staging DB has 3 junk bookings from testing — ignore, do not clean up yet
+- Checkout session creation works, verified with a test card Tuesday
+- Receipt email works in isolation (`lib/mail.ts`), never wired to the webhook
+- Test DB has junk orders from testing — ignore, do not clean up
 
 ## Decided, do not re-open
-- Twilio over Vonage — AU number availability. See DECISIONS.md 2026-08-11.
-- No booking UI this milestone. SMS with a link is enough to test the loop.
+- Stripe over Paddle — see DECISIONS.md 2026-08-11
+- No invoice PDF this milestone. Email receipt is enough.
 
 ## Tried and failed
-- Studio Flow for the routing — too opaque to debug, reverted at 3f2a1c9.
-  Do not retry unless the code path becomes unmaintainable.
+- Polling the sessions API instead of webhooks — race conditions,
+  reverted at 3f2a1c9. Do not retry.
 
 ## Blocked / waiting
-- AU number regulatory bundle in review with Twilio, submitted 08-14.
-  Chase if nothing by 08-21. Does not block staging work.
+- Business verification with Stripe, submitted 08-14. Chase if nothing
+  by 08-21. Does not block test mode.
 
 ## Do not do this session
-- Do not refactor `lib/sms.ts`. It is ugly and it works.
-- Do not touch OneCue. It is PAUSED.
+- Do not refactor `lib/mail.ts`. It is ugly and it works.
 ```
 
-### The six questions Landing must answer
+### The six questions, and why each exists
 
-Every one of these exists because of a specific way sessions get wasted.
-
-**1. What was the one bet?**
-Not the project. The single outcome this session was buying. Without it, Boot starts with "what should I work on," which is a Focus question you already answered and are now paying for twice.
+**1. What was the one thread?**
+The single outcome the session was buying. Without it, Boot starts with "what should I work on," which re-opens a question you already answered.
 
 **2. What is the next physical action?**
-File path, function, line number. The test: could a competent stranger start it without asking you a question? "Continue the SMS work" fails. "Add the status-callback handler at `app/api/voice/status/route.ts`, the file exists and is empty" passes.
+File path, function, line. Test: could a competent stranger start it without asking you anything? "Continue the checkout work" fails. The template line above passes.
 
 **3. What is the state of play?**
-What works, what is half-built, what is deliberately broken. This is what stops you from re-verifying things you already verified.
+What works, what is half-built, what is deliberately broken. Stops you re-verifying what you already verified.
 
 **4. What is decided and closed?**
-The highest-value section. Every closed decision you fail to record is a decision you will re-debate. Three sessions of re-litigating your database choice is three sessions of nothing shipped, and it feels like work the whole time.
+Highest-value section. Every unrecorded closed decision is one you will re-debate, and re-debating feels like work the entire time.
 
 **5. What did you try that failed?**
-The negative result with the commit SHA. Without it you will rediscover the same dead end in a month and it will cost the same as it did the first time.
+The negative result with a commit SHA. Otherwise you rediscover the same dead end in a month at full price.
 
-**6. What must you *not* do?**
-Explicit non-goals for the next session. The refactor you keep eyeing, the paused project, the interesting tangent. Naming it in writing is what stops it from eating the window — an untagged temptation gets re-evaluated every session, and eventually you say yes.
+**6. What must you not do?**
+The refactor you keep eyeing, the tangent. An untagged temptation gets re-evaluated every session, and eventually you say yes.
 
 ---
 
 ## Boot (start of session, 2 minutes)
 
-Read `RESUME.md`, then start. That is the whole protocol, and its discipline is entirely in what you refuse to do.
+Read `RESUME.md`, then start. The discipline is entirely in what you refuse to do first.
 
-The failure mode here is not forgetting to read the file. It is reading it and then **opening something else** — the inbox, the issue tracker, the deploy dashboard, yesterday's failing test — and never getting to the next action. Boot exists to move you from cold to typing in under two minutes.
+The failure mode is not forgetting to read it. It is reading it and then opening the inbox, the issue tracker, the analytics tab, or yesterday's failing test — and never reaching the next action.
 
 ### Protocol
 
-1. Read `RESUME.md`. Do not open anything else first.
+1. Read `RESUME.md`. Open nothing else first.
 2. Check out the named branch.
-3. Start the named next action. Immediately, before any grooming, triage, or dependency updates.
-4. Do not re-plan. The plan was made by a version of you with full context. Trust them.
-5. If the next action is genuinely wrong now, spend at most ten minutes replacing it, log why in `DECISIONS.md`, and go.
+3. Start the named action immediately — before grooming, triage, or dependency updates.
+4. Do not re-plan. The plan was made by a version of you with full context.
+5. If the action is genuinely wrong now, spend at most ten minutes replacing it, log why, and go.
 
-### When the agent runs Boot
+### Agent output
 
-Read `.mechanisms/RESUME.md` and respond with **at most six lines**:
+At most six lines:
 
 ```
-BOOT · evercall · feat/missed-call-sms · 4 days since last session
+BOOT · feat/checkout · 4 days since last session
 
-Bet: missed call → booking SMS, end to end on staging
-Next: add status-callback handler at app/api/voice/status/route.ts (empty, signature at route.ts:1-12)
-Closed: Twilio chosen; no booking UI this milestone
-Avoid: refactoring lib/sms.ts; OneCue is PAUSED
-Blocked: AU regulatory bundle, chase 08-21 (does not block today)
+Thread: test card completes checkout and produces a receipt
+Next: add Stripe webhook handler at app/api/stripe/route.ts
+      (empty; pattern at app/api/health/route.ts:1-14)
+Closed: Stripe chosen; no invoice PDF this milestone
+Avoid: refactoring lib/mail.ts
+Blocked: business verification, chase 08-21 (does not block test mode)
 
 Starting there?
 ```
 
-Do not paste the file back. Do not summarize it into prose paragraphs. Do not offer a menu of alternatives — offering options at Boot re-opens the planning question the last session already closed.
+Do not paste the file back. Do not expand it into prose. **Do not offer a menu of alternatives** — offering options at Boot re-opens the planning question the last session closed.
 
-**Then start the work.** Boot ends with the user typing code, not with the user reading a nicely formatted status report.
+Then start the work. Boot ends with code being written, not with a well-formatted status report.
 
 ---
 
-## When there is no RESUME.md
+## When there is no `RESUME.md`
 
-The last session did not land. This is the common case at the start.
+The last session did not land. Common at the start.
 
-Reconstruct once, cheaply, then land properly at the end of this session:
+Reconstruct once, cheaply, then land properly at the end so it does not recur:
 
-1. `git log --oneline -15` and `git status` — what was actually in flight
-2. `git diff` on the working tree — uncommitted work is the strongest signal of where you stopped
-3. Check the branch name — usually names the bet
-4. Ask the user exactly one question: **"What was the outcome you were going for?"**
+1. `git log --oneline -15` and `git status` — what was in flight
+2. `git diff` — uncommitted work is the strongest signal of where you stopped
+3. The branch name usually names the thread
+4. Ask exactly one question: **"What outcome were you going for?"**
 
-Do not interrogate. Do not reconstruct the full history. Get to a plausible next action within five minutes and start. Then run Landing properly at the end so this never happens again.
+Do not interrogate and do not reconstruct full history. Reach a plausible next action within five minutes and start.
 
 ---
 
 ## Anti-patterns
 
-**Writing a status report.** `RESUME.md` is addressed to you, in the second person, with file paths and SHAs. It is not for a stakeholder. If it reads like something you would post in a standup channel, it is too abstract to act on.
+**Writing a status report.** `RESUME.md` is addressed to you, in the second person, with paths and SHAs. If it reads like a standup update, it is too abstract to act on.
 
-**Landing after you are exhausted.** Land with five minutes of energy left, not five minutes of consciousness. A landing written at the end of the tank is vague, and vague landings are the same as none.
+**Landing when exhausted.** Land with five minutes of energy left, not five minutes of consciousness. A vague landing is the same as none.
 
-**Letting it grow into a log.** `RESUME.md` is overwritten every session and stays under a page. Durable decisions go to `DECISIONS.md`, durable lessons to `LEARNINGS.md`. A `RESUME.md` that accumulates becomes a document you skim instead of read, and a skimmed handoff is a failed one.
+**Letting it grow into a log.** Overwritten every session, under a page. A `RESUME.md` you skim is a failed handoff.
 
-**Vague next actions.** "Continue the integration" means Boot has to re-plan, which means Boot costs twenty minutes, which means the mechanism did nothing.
+**Vague next actions.** "Continue the integration" forces Boot to re-plan, so Boot costs twenty minutes and the mechanism did nothing.
 
-**Skipping Landing because the session went badly.** Failed sessions produce the most valuable handoffs — that is where "tried and failed" comes from. A wasted session that is written down is a cheap negative result. A wasted session that is not becomes a wasted session you will repeat.
+**Skipping Landing after a bad session.** Failed sessions produce the most valuable handoffs — that is where "tried and failed" comes from. A wasted session written down is a cheap negative result. Unwritten, it is a session you will repeat.
 
 ---
 
-## Why this is the wedge
+## Measure your own
 
-Every other mechanism in this skill improves work that is already happening. Re-entry creates the sessions in the first place, by refusing to spend them on reconstruction.
+For four sessions, note the clock when you open the laptop and when you type the first real line of code. That gap, times sessions per month, is what this mechanism is worth to you.
 
-It is also the mechanism nobody else builds, because the people writing founder tooling are full-time and do not have this problem. The gap between Tuesday and Saturday is invisible if you never leave.
-
-Measure it: for the next four sessions, note the clock when you open the laptop and the clock when you type the first real line of code. That gap, times your sessions per month, is what this mechanism is worth to you. Use your own number — not a claim from a README.
+Use your own number. If Landing does not pay for itself, stop running it — the same rule applies to every mechanism here.
