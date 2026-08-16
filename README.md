@@ -25,8 +25,22 @@
 ```bash
 npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill amazon-writing
-npx skills add akashp1712/skills --skill amazon-writing
 ```
+
+---
+
+### 🧭 **team-of-one** — Amazon Mechanisms for Solo Builders
+**Amazon keeps quality high with mechanisms, not willpower** — the bar raiser, one-way vs two-way doors, tenets, the COE. Every one assumes a team. This ports them to **scale = 1**.
+
+- **🔁 Re-entry**: Boot and Landing — stop losing the thread between Tuesday and Saturday
+- **🚦 Bar raiser**: a reviewer with a real veto, written before you're attached to the work
+- **🚪 Doors**: 10 minutes on reversible calls, a 1-pager on irreversible ones
+- **🎯 Focus**: exactly one `PRIMARY`, pre-committed kill gates, no silent pausing
+- **📁 Real state**: maintains `.mechanisms/` files, not advice
+
+**Perfect for**: employed builders shipping on nights and weekends.
+
+**Install**: `npx skills add akashp1712/skills --skill team-of-one`
 
 ---
 
@@ -141,6 +155,7 @@ Each skill includes clear documentation, examples, and best practices for immedi
 # Install individual skills
 npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill amazon-writing
+npx skills add akashp1712/skills --skill team-of-one
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
 npx skills add akashp1712/skills --skill zero-to-hero
