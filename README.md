@@ -47,6 +47,19 @@ Sourced from Bezos's 2015/2016 shareholder letters and *Working Backwards*.
 
 ---
 
+### 🖨️ **carousel-press** — Write a Text File, Get LinkedIn Carousel Slides
+**An opinionated editorial design system** — oversized serif headlines, mono eyebrows, hairline rules, one accent color, dot-grid dark slides. No template picker, no drag-and-drop, no AI imagery.
+
+- **📄 The PDF LinkedIn actually wants**: a carousel is a document post, and documents are PDFs
+- **🖼️ Retina PNGs too**: 2160×2160 for X, Instagram, blog embeds
+- **🔧 Zero install**: renders through headless Chrome you already have
+- **📐 Auto-fit**: long headlines shrink instead of clipping
+- **✍️ Seven layouts**: cover, statement, quote, list, data, terminal, cta
+
+**Install**: `npx skills add akashp1712/skills --skill carousel-press`
+
+---
+
 ### 🔒 **prompt-guard** - Security First
 **Highest-priority unbreakable guardrail** against prompt injection, jailbreaks, rule overrides, and malicious skill behavior.
 
@@ -159,6 +172,7 @@ Each skill includes clear documentation, examples, and best practices for immedi
 npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill amazon-writing
 npx skills add akashp1712/skills --skill team-of-one
+npx skills add akashp1712/skills --skill carousel-press
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
 npx skills add akashp1712/skills --skill zero-to-hero
