@@ -1,0 +1,6 @@
+.DS_Store
+
+# Carousel renders. This repo is cloned in full on every `npx skills add`,
+# so generated decks stay out of it — they belong in the GTM repo.
+*-carousel/
+*.deck.pdf
