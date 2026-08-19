@@ -165,10 +165,10 @@ cta          the line worth screenshotting
 
 ## Example
 
-[`examples/team-of-one.deck.md`](examples/team-of-one.deck.md) is a complete nine-slide carousel. Render it:
+Rendered decks (PDF + PNGs + post copy) live in [`carousels/`](../carousels). The team-of-one example:
 
 ```bash
-python3 scripts/render.py examples/team-of-one.deck.md
+python3 scripts/render.py ../carousels/team-of-one/team-of-one.deck.md
 ```
 
 ---

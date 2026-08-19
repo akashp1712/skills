@@ -58,6 +58,8 @@ Sourced from Bezos's 2015/2016 shareholder letters and *Working Backwards*.
 
 **Install**: `npx skills add akashp1712/skills --skill carousel-press`
 
+Rendered decks to upload: [`carousels/`](carousels)
+
 ---
 
 ### 🔒 **prompt-guard** - Security First
