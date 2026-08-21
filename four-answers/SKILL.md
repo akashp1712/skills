@@ -6,7 +6,7 @@ user_invocable: true
 
 # Four Answers
 
-From Amazon's internal *Write Like an Amazonian* guide (circa 2018). Full context: [amazon-writing.md](amazon-writing.md) · Doc types: [amazon-writing skill](../amazon-writing/SKILL.md) · Operating mechanisms: [team-of-one](../team-of-one/SKILL.md)
+From Amazon's internal *Write Like an Amazonian* guide (circa 2018). Full context: [amazon-writing.md](amazon-writing.md) · Doc types: [amazon-writing skill](../amazon-writing/SKILL.md) · Operating mechanisms: [day-job-founder](../day-job-founder/SKILL.md) · [solo-founder](../solo-founder/SKILL.md)
 
 If you get a question, reply with **one** of:
 

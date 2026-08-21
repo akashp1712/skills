@@ -2,9 +2,7 @@
 
 Upload `carousel-press.deck.pdf` as a LinkedIn **document post**.
 
-Cadence: **held.** Do not ship the same week as team-of-one. Earliest is the
-week of Mon 31, unless comments on the team-of-one post ask how the slides
-were made — then this is the reply, not a second post that week.
+Cadence: **held.** Do not ship the same week as a mechanism-skill launch.
 
 ---
 
@@ -40,7 +38,7 @@ were made — then this is the reply, not a second post that week.
 
 ## Do not
 
-- Ship this the same week as team-of-one.
-- Pitch it in the team-of-one post itself. Wait for someone to ask, or wait until week of Mon 31.
+- Ship this the same week as a mechanism-skill launch.
+- Pitch it in a mechanism post itself. Wait for someone to ask.
 - Claim Canva is bad for everyone. The claim is you stopped opening it.
 - Add a second CTA. The install line is the ask.

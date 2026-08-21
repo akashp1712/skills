@@ -29,21 +29,27 @@ npx skills add akashp1712/skills --skill amazon-writing
 
 ---
 
-### 🧭 **team-of-one** — Amazon Mechanisms for Solopreneur Efficiency
-> *"Good intentions don't work. Mechanisms do."* — an old adage at Amazon
+### 🧭 **day-job-founder** — Mechanisms for a Solo Founder with a Day Job
+You build in the gaps. The code survives. The model in your head does not. This skill writes `.mechanisms/` files so Saturday does not start by remembering Friday.
 
-You can't out-discipline a team. You can out-mechanism one. Five mechanisms, each killing a specific waste:
+- **Re-entry first**: end of session writes the next action (path and line); start of session begins there
+- **Closed decisions stay closed**: `DECISIONS.md` logs what you ruled out, so Thursday cannot reopen Tuesday
+- **One thread**: a two-hour window cannot hold three open loops
+- **On first use**: scaffolds real files. Does not lecture Amazon theory.
 
-- **⚡ Velocity**: decide at 70% info; 10 min on reversible calls, a 1-pager on irreversible ones
-- **🧵 Single-thread**: two open threads run at ~35% each — the missing 30% is reload cost
-- **🔁 Re-entry**: recover context in 2 minutes instead of 90
-- **📊 Input metrics**: measure what you control, not MRR you can't move
-- **♻️ Compounding**: a bar written before you're attached; corrections that are mechanisms, not resolutions
-- **📁 Real state**: maintains `.mechanisms/` files, not advice
+**Install**: `npx skills add akashp1712/skills --skill day-job-founder`
 
-Sourced from Bezos's 2015/2016 shareholder letters and *Working Backwards*.
+---
 
-**Install**: `npx skills add akashp1712/skills --skill team-of-one`
+### 🧭 **solo-founder** — Mechanisms for a One-Person Company
+The company is you. The day has no edges, so support, the dashboard, and a rewrite all feel equally urgent — and nothing closes. Same files, different default: name the one outcome for the morning, park the rest.
+
+- **One thread for the morning**: everything else is a list, not a second start
+- **Decide at 70%**: deliberation expands to fill a calendar with no meetings
+- **Inputs, not the dashboard**: looking at MRR is not a task
+- **On first use**: scaffolds real files. Does not lecture Amazon theory.
+
+**Install**: `npx skills add akashp1712/skills --skill solo-founder`
 
 ---
 
@@ -173,7 +179,8 @@ Each skill includes clear documentation, examples, and best practices for immedi
 # Install individual skills
 npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill amazon-writing
-npx skills add akashp1712/skills --skill team-of-one
+npx skills add akashp1712/skills --skill day-job-founder
+npx skills add akashp1712/skills --skill solo-founder
 npx skills add akashp1712/skills --skill carousel-press
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton

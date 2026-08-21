@@ -157,4 +157,4 @@ Uses headless Chrome, already installed on most machines. Override with `CAROUSE
 - **Fabricated quotes or numbers.** Disqualifying.
 - **Two accented phrases in one headline.**
 - **Shipping without looking at the images.** Always read at least two rendered slides before delivering.
-- **A cover that describes instead of claims.** "Thoughts on productivity" is not a cover. "You can't out-discipline a team" is.
+- **A cover that describes instead of claims.** "Thoughts on productivity" is not a cover. "You lose the first hour rebuilding Friday" is.

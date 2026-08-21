@@ -9,7 +9,7 @@ user_invocable: true
 One skill for Amazon narrative document types — shared **spec format** for humans reviewing in meetings and **agents executing** in spec-driven development.
 
 **Companion wedge:** [four-answers](../four-answers/SKILL.md) — answer-only enforcement on Q&A.  
-**Companion operating layer:** [team-of-one](../team-of-one/SKILL.md) — Amazon mechanisms for a solo builder.
+**Companion operating layer:** [day-job-founder](../day-job-founder/SKILL.md) (building in the gaps) · [solo-founder](../solo-founder/SKILL.md) (the company is the whole day).
 
 Deep guides: [docs/](docs/) · Rules reference: [reference.md](reference.md) · Spec-driven context: [docs/spec-driven.md](docs/spec-driven.md)
 
