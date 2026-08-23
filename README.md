@@ -77,6 +77,18 @@ npx shadcn@latest add skeleton
 
 ---
 
+### 🧯 **next-error-tsx** — Don't Ship the Digest Screen
+**The crash sibling of `next-loading-skeleton`.** App Router already named `error.tsx`. Agents still ship data pages without it. Production then shows the Next digest overlay instead of a retry.
+
+- **📄 Writes the file**: `error.tsx` next to `page.tsx`, `global-error.tsx` at the root
+- **🔁 Try again**: `reset()` re-renders the segment
+- **🚫 No leaks**: never render `error.message` or `error.digest`
+- **🔍 404s are separate**: `not-found.tsx` on dynamic routes, not a thrown Error
+
+**Install**: `npx skills add akashp1712/skills --skill next-error-tsx`
+
+---
+
 ### 📚 **zero-to-hero** - Comprehensive Learning Guides
 Generate zero‑to‑hero markdown guides for any topic, with progressive chapters, analogies, ASCII art, diagrams, and code examples.
 
@@ -158,6 +170,7 @@ npx skills add akashp1712/skills --skill amazon-writing
 npx skills add akashp1712/skills --skill carousel-press
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
+npx skills add akashp1712/skills --skill next-error-tsx
 npx skills add akashp1712/skills --skill zero-to-hero
 npx skills add akashp1712/skills --skill workspace-disk-cleanup
 ```
