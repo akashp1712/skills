@@ -168,7 +168,7 @@ cta          the line worth screenshotting
 Rendered decks (PDF + PNGs + post copy) live in [`carousels/`](../carousels). Example:
 
 ```bash
-python3 scripts/render.py ../carousels/day-job-founder/day-job-founder.deck.md
+python3 scripts/render.py ../carousels/carousel-press/carousel-press.deck.md
 ```
 
 ---
@@ -179,7 +179,6 @@ python3 scripts/render.py ../carousels/day-job-founder/day-job-founder.deck.md
 |-------|-----|
 | [amazon-writing](../amazon-writing) | Cut the source text before it becomes slides |
 | [four-answers](../four-answers) | Kill weasel words — fatal at 104px |
-| [day-job-founder](../day-job-founder) | Operating mechanisms for founders building in the gaps |
-| [solo-founder](../solo-founder) | Operating mechanisms for a one-person company |
+| [ships](../ships) | Kill "looks good" — fatal in a caption |
 
 MIT licensed.

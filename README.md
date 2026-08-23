@@ -13,45 +13,19 @@
 
 ## 🚀 Featured Skills
 
-### 🎯 **four-answers** + **amazon-writing** — Write Like an Amazonian
-**Two skills:** `four-answers` (Yes/No/number/IDK by X wedge) + `amazon-writing` (1-pager, 6-pager, PR/FAQ, tenets, COE + lint + spec-driven for agents & humans).
+### 🎯 **four-answers** + **amazon-writing** + **ships** — Write Like an Amazonian
+**Three skills:** `four-answers` (Yes/No/number/IDK by X) + `amazon-writing` (1-pager, 6-pager, PR/FAQ, tenets, COE) + `ships` (SHIPS / DOESN'T SHIP / SHIPS AFTER one fix / CAN'T SAY UNTIL one fact).
 
-- **⚡ Auto-applies**: Factual Q&A and business document draft/review
-- **📄 One doc skill**: six Amazon doc types in `amazon-writing/docs/` — not eight separate installs
-- **📅 Committed follow-up**: Bare "I don't know" is not allowed
-- **📖 Sources**: [amazon-writing.md](four-answers/amazon-writing.md)
+- **⚡ Questions:** four-answers — no weasel words, no bare "I don't know"
+- **📄 Docs:** amazon-writing — six Amazon doc types, not eight installs
+- **🚢 Done:** ships — "looks good" is not a verdict
 
 **Install**:
 ```bash
 npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill amazon-writing
+npx skills add akashp1712/skills --skill ships
 ```
-
----
-
-### 🧭 **day-job-founder** — Mechanisms for a Solo Founder with a Day Job
-You build in the gaps. The code survives. The model in your head does not. This skill writes `.mechanisms/` files so Saturday does not start by remembering Friday.
-
-- **Re-entry first**: end of session writes the next action (path and line); start of session begins there
-- **Closed decisions stay closed**: `DECISIONS.md` logs what you ruled out, so Thursday cannot reopen Tuesday
-- **One thread**: a two-hour window cannot hold three open loops
-- **On first use**: scaffolds real files. Does not lecture Amazon theory.
-
-**Install**: `npx skills add akashp1712/skills --skill day-job-founder`
-
----
-
-### 🧭 **solo-founder** — Mechanisms for a One-Person Company
-The company is you. The day has no edges, so support, the dashboard, and a rewrite all feel equally urgent — and nothing closes. Same files, different default: name the one outcome for the morning, park the rest.
-
-- **One thread for the morning**: everything else is a list, not a second start
-- **Decide at 70%**: deliberation expands to fill a calendar with no meetings
-- **Inputs, not the dashboard**: looking at MRR is not a task
-- **On first use**: scaffolds real files. Does not lecture Amazon theory.
-
-**Install**: `npx skills add akashp1712/skills --skill solo-founder`
-
----
 
 ### 🖨️ **carousel-press** — Write a Text File, Get LinkedIn Carousel Slides
 **An opinionated editorial design system** — oversized serif headlines, mono eyebrows, hairline rules, one accent color, dot-grid dark slides. No template picker, no drag-and-drop, no AI imagery.
@@ -179,8 +153,7 @@ Each skill includes clear documentation, examples, and best practices for immedi
 # Install individual skills
 npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill amazon-writing
-npx skills add akashp1712/skills --skill day-job-founder
-npx skills add akashp1712/skills --skill solo-founder
+npx skills add akashp1712/skills --skill ships
 npx skills add akashp1712/skills --skill carousel-press
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
