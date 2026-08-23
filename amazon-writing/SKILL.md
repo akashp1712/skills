@@ -8,8 +8,7 @@ user_invocable: true
 
 One skill for Amazon narrative document types — shared **spec format** for humans reviewing in meetings and **agents executing** in spec-driven development.
 
-**Companion wedge:** [four-answers](../four-answers/SKILL.md) — answer-only enforcement on Q&A.  
-**Companion for "is it done?":** [ships](../ships/SKILL.md) — forbids "looks good" as a review.
+**Companion wedge:** [four-answers](../four-answers/SKILL.md) — answer-only enforcement on Q&A.
 
 Deep guides: [docs/](docs/) · Rules reference: [reference.md](reference.md) · Spec-driven context: [docs/spec-driven.md](docs/spec-driven.md)
 

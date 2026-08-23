@@ -179,6 +179,6 @@ python3 scripts/render.py ../carousels/carousel-press/carousel-press.deck.md
 |-------|-----|
 | [amazon-writing](../amazon-writing) | Cut the source text before it becomes slides |
 | [four-answers](../four-answers) | Kill weasel words — fatal at 104px |
-| [ships](../ships) | Kill "looks good" — fatal in a caption |
+| [and-nothing-else](../and-nothing-else) | Kill the extra slide you did not ask for |
 
 MIT licensed.
