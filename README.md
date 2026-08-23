@@ -29,23 +29,6 @@ npx skills add akashp1712/skills --skill amazon-writing
 
 ---
 
-### 🛑 **and-nothing-else** — Do the Ask. Log the Rest.
-You asked for a typo fix. It extracted a component. This skill makes it fix the typo, then print a **temptation log** of every extra impulse it refused.
-
-```
-DID      fix the typo in the heading
-CHANGED  page.tsx — Recieve → Receive
-NOT      reformat the file
-         rewrite the heading to be punchier
-         extract the heading into a Heading component
-```
-
-The `NOT` column is the product. Helpfulness is the bug.
-
-**Install**: `npx skills add akashp1712/skills --skill and-nothing-else`
-
----
-
 ### 🖨️ **carousel-press** — Write a Text File, Get Carousel Slides
 **An opinionated editorial design system** — oversized serif headlines, mono eyebrows, hairline rules, one accent color, dot-grid dark slides. No template picker, no drag-and-drop, no AI imagery.
 
@@ -172,7 +155,6 @@ Each skill includes clear documentation, examples, and best practices for immedi
 # Install individual skills
 npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill amazon-writing
-npx skills add akashp1712/skills --skill and-nothing-else
 npx skills add akashp1712/skills --skill carousel-press
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
