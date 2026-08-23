@@ -1,33 +1,50 @@
 ---
 name: carousel-press
-description: Turn writing into LinkedIn carousel slides in a warm editorial letterpress style — oversized serif headlines, mono eyebrows, hairline rules, one accent color, and a dot-grid dark treatment. Writes a .deck.md file and renders 1080x1080 PNGs plus the square PDF that LinkedIn document posts require, using headless Chrome with no dependencies to install. Auto-applies when turning a post, article, README, or skill into slides. Triggered by /carousel-press.
+description: Turn writing into swipe-carousel slides for LinkedIn, Instagram, and TikTok in a warm editorial letterpress style — oversized serif headlines, mono eyebrows, hairline rules, one accent color, and a dot-grid dark treatment. Writes a .deck.md file and renders the size each platform actually wants (LinkedIn square PDF, Instagram 4:5 PNGs, TikTok 9:16 PNGs) using headless Chrome with no dependencies to install. Auto-applies when turning a post, article, README, or skill into slides. Triggered by /carousel-press.
 user_invocable: true
 ---
 
 # Carousel Press
 
-Renders a plain-text deck file into LinkedIn carousel slides with a fixed, opinionated design system. No template picking, no drag-and-drop, no AI-generated imagery.
+Renders a plain-text deck file into swipe-carousel slides with a fixed, opinionated design system. No template picking, no drag-and-drop, no AI-generated imagery. Same deck, three surfaces: LinkedIn, Instagram, TikTok.
 
-**Division of labour:** you do the editorial work — choosing the argument, cutting the words, sequencing the slides. `scripts/render.py` does the rendering, deterministically. Never hand-build HTML for slides; write the deck file and render it.
+**Division of labour:** you (the agent) do the editorial work and run the renderer. The human never has to touch `scripts/render.mjs`. They get files they can upload. Never hand-build HTML for slides; write the deck file and render it yourself.
 
 ---
 
-## Why a PDF
+## Surfaces
 
-On LinkedIn, a "carousel" is a **document post**, and documents are PDFs. The renderer emits both:
+Only platforms that have a **swipe carousel**. Named after the upload target, not the ratio.
 
-- `<name>.pdf` — upload this to LinkedIn
-- `01.png … NN.png` at 2160×2160 — for X, Instagram, blog embeds, or previews
+| `--surface` | Size | What to upload |
+|-------------|------|----------------|
+| `linkedin` (default) | 1080×1080 | PDF as a document post, plus square PNGs |
+| `instagram` | 1080×1350 (4:5) | PNGs in order as a feed carousel |
+| `tiktok` | 1080×1920 (9:16) | PNGs in order as a photo carousel |
+| `all` | all three | subfolders under `-o` |
+
+X is a 4-image grid, not a swipe carousel — do not render a surface for it. Facebook feed carousels take the Instagram 4:5 PNGs.
+
+Type sizes stay the same across surfaces. Extra vertical room on 4:5 and 9:16 is the format, not a cue to write more.
 
 ---
 
 ## Workflow
 
+You run every step. Do not paste these commands for the human to execute.
+
 1. **Find the one argument.** A carousel makes a single point. If the source has three, make three carousels.
-2. **Write the deck** to `<name>.deck.md` using the format below.
-3. **Validate:** `python3 scripts/render.py <name>.deck.md --check`
-4. **Render:** `python3 scripts/render.py <name>.deck.md`
-5. **Look at the output** before handing it over. Read at least the cover and one interior slide as images and check for overflow or awkward wraps.
+2. **Pick the surface** if they named a platform. If they did not, default to LinkedIn. If they said "Instagram and TikTok" or "everywhere," use `--surface all`.
+3. **Write the deck** to `<name>.deck.md` using the format below.
+4. **Validate, then render** from this skill's directory (so `scripts/render.mjs` resolves):
+
+```bash
+node scripts/render.mjs <name>.deck.md --check
+node scripts/render.mjs <name>.deck.md --surface <linkedin|instagram|tiktok|all> -o <out/>
+```
+
+5. **Look at the output yourself.** Read at least the cover and one interior slide as images. Check for overflow or awkward wraps. Fix the deck and re-render if needed.
+6. **Hand over the files**, not a command. LinkedIn: upload the PDF as a document post. Instagram / TikTok: upload `01.png` … in order. Say where the files are.
 
 ---
 
@@ -128,23 +145,31 @@ cta          the line worth screenshotting
 
 ---
 
-## Rendering
+## Rendering (you run this)
+
+Resolve `scripts/render.mjs` from this skill's install path. Run it with **Node** — already present because the skill was installed with `npx`, and already present for you as the agent. Do not install Python.
+
+The slides are HTML. Chrome (or Chromium, Edge, Brave) paints them to PNG and PDF. It is already on almost every machine that would install this skill — same class of dependency as Node. Do not ask the human to install Chrome unless `render.mjs` actually errors that none was found. Do not ask them to run the renderer.
 
 ```bash
-python3 scripts/render.py deck.md              # PNGs + PDF
-python3 scripts/render.py deck.md --check      # validate, render nothing
-python3 scripts/render.py deck.md -o out/      # output directory
-python3 scripts/render.py deck.md --pdf-only
-python3 scripts/render.py deck.md --scale 1    # 1080px instead of 2160px
+node scripts/render.mjs deck.md                         # LinkedIn PNGs + PDF
+node scripts/render.mjs deck.md --surface instagram     # 4:5 PNGs
+node scripts/render.mjs deck.md --surface tiktok        # 9:16 PNGs
+node scripts/render.mjs deck.md --surface all -o out/   # all three, in subfolders
+node scripts/render.mjs deck.md --check                 # validate, render nothing
+node scripts/render.mjs deck.md --pdf-only
+node scripts/render.mjs deck.md --scale 1               # 1× instead of 2× retina
 ```
 
-Uses headless Chrome, already installed on most machines. Override with `CAROUSEL_CHROME=/path/to/browser`. Fonts load from Google Fonts on first render, so the initial run needs network; it falls back to system serif, sans, and mono offline.
+Or set `surface: instagram` in the deck frontmatter. `--surface` on the command line wins.
+
+Fonts load from Google Fonts on first render, so the initial run needs network; it falls back to system serif, sans, and mono offline. Override the browser with `CAROUSEL_CHROME=/path/to/browser`.
 
 ---
 
 ## When this applies
 
-**Apply when:** converting a post, article, README, thread, or skill into slides; the user says carousel, LinkedIn document, or slide deck for social.
+**Apply when:** converting a post, article, README, thread, or skill into slides; the user says carousel, LinkedIn document, Instagram carousel, TikTok photo carousel, or slide deck for social.
 
 **Do not apply when:** the user wants a presentation to speak over (different medium, different density), an editable PowerPoint, or a single OG image.
 
@@ -152,6 +177,7 @@ Uses headless Chrome, already installed on most machines. Override with `CAROUSE
 
 ## Anti-patterns
 
+- **Telling the human to run `node scripts/render.mjs`.** That is your job. They upload.
 - **Hand-writing HTML instead of a deck file.** The renderer is the mechanism; bypassing it loses the design system.
 - **Cramming a paragraph onto a slide.** Cut it or split it.
 - **Fabricated quotes or numbers.** Disqualifying.

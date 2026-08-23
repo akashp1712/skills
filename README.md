@@ -46,11 +46,11 @@ The `NOT` column is the product. Helpfulness is the bug.
 
 ---
 
-### 🖨️ **carousel-press** — Write a Text File, Get LinkedIn Carousel Slides
+### 🖨️ **carousel-press** — Write a Text File, Get Carousel Slides
 **An opinionated editorial design system** — oversized serif headlines, mono eyebrows, hairline rules, one accent color, dot-grid dark slides. No template picker, no drag-and-drop, no AI imagery.
 
-- **📄 The PDF LinkedIn actually wants**: a carousel is a document post, and documents are PDFs
-- **🖼️ Retina PNGs too**: 2160×2160 for X, Instagram, blog embeds
+- **📄 LinkedIn PDF**: a carousel is a document post, and documents are PDFs (1080×1080)
+- **📱 Instagram + TikTok**: 4:5 and 9:16 PNGs — the platforms that actually swipe
 - **🔧 Zero install**: renders through headless Chrome you already have
 - **📐 Auto-fit**: long headlines shrink instead of clipping
 - **✍️ Seven layouts**: cover, statement, quote, list, data, terminal, cta

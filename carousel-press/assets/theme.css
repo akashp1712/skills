@@ -1,6 +1,7 @@
 /* carousel-press — warm editorial letterpress with a terminal accent.
-   Design tokens follow littlemight.com. Everything is scaled for a fixed
-   1080x1080 stage, so sizes are absolute px rather than fluid clamps. */
+   Design tokens follow littlemight.com. Type is absolute px (not fluid clamps).
+   Stage size is injected at render time: LinkedIn 1080×1080, Instagram 1080×1350,
+   TikTok 1080×1920. */
 
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap");
 
@@ -18,7 +19,8 @@
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --stage: 1080px;
+  --stage-w: 1080px;
+  --stage-h: 1080px;
   --pad: 88px;
 
   --bg: var(--paper);
@@ -40,12 +42,16 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html, body { background: #222; }
+html, body {
+  background: #222;
+  width: var(--stage-w);
+  margin: 0;
+}
 
 .slide {
   position: relative;
-  width: var(--stage);
-  height: var(--stage);
+  width: var(--stage-w);
+  height: var(--stage-h);
   background: var(--bg);
   color: var(--fg);
   font-family: var(--sans);

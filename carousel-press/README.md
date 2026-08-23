@@ -1,6 +1,6 @@
 # Carousel Press
 
-**Write a text file. Get LinkedIn carousel slides.**
+**Write a text file. Get carousel slides for the platforms that actually have carousels.**
 
 An opinionated design system in a warm editorial letterpress style — oversized Instrument Serif headlines, mono eyebrows at wide tracking, hairline rules instead of boxes, one accent color, and a masked dot-grid on dark slides.
 
@@ -16,28 +16,38 @@ No template picker. No drag-and-drop. No AI-generated imagery. One deck file in,
 npx skills add akashp1712/skills --skill carousel-press
 ```
 
-Renders through **headless Chrome**, which you almost certainly already have. Nothing to `pip install`, no Playwright browser download.
+Renders through **headless Chrome**, which you almost certainly already have. Uses the **Node** that came with `npx skills add`. No Python, no `npm install`, no Playwright.
 
 ---
 
 ## Use
 
 ```bash
-python3 scripts/render.py mypost.deck.md
+node scripts/render.mjs mypost.deck.md
+node scripts/render.mjs mypost.deck.md --surface instagram
+node scripts/render.mjs mypost.deck.md --surface tiktok
+node scripts/render.mjs mypost.deck.md --surface all -o out/
 ```
 
 ```
-mypost.deck.md: 9 slides
+mypost.deck.md: 9 slides → instagram
   01  cover     dark Amazon runs on mechanisms. You run on *good intentions*.
-  02  quote          Good intentions don't work. Mechanisms do.
   ...
-  wrote 01.png … 09.png
-  wrote mypost.pdf
-
-Upload the PDF to LinkedIn as a document post — that is a carousel.
+  wrote instagram/01.png (1080×1350)
+  wrote instagram/09.png (1080×1350)
+  Upload 01.png … in order as an Instagram feed carousel (4:5).
 ```
 
-You get **1080×1080 PNGs at 2× retina** and a **square PDF**. The PDF matters: on LinkedIn a carousel *is* a document post, and documents are PDFs.
+| Surface | Size | Upload |
+|---------|------|--------|
+| `linkedin` (default) | 1080×1080 | PDF document post + square PNGs |
+| `instagram` | 1080×1350 (4:5) | PNGs as a feed carousel |
+| `tiktok` | 1080×1920 (9:16) | PNGs as a photo carousel |
+| `all` | all three | subfolders under `-o` |
+
+X is not a swipe carousel (it is a 4-image grid). Facebook takes the Instagram 4:5 PNGs.
+
+Default LinkedIn output is **2× retina PNGs** plus the **square PDF**. The PDF matters: on LinkedIn a carousel *is* a document post, and documents are PDFs. Instagram and TikTok get PNGs only.
 
 ---
 
@@ -100,19 +110,24 @@ Seven layouts: `cover`, `statement`, `quote`, `list`, `data`, `terminal`, `cta`.
 
 **Hanging indents** on terminal commands, so a wrapped command aligns under itself instead of under the `$`.
 
-**Retina output** at 2160×2160 by default. Use `--scale 1` for 1080.
+**Retina output** at 2× by default (2160 wide). Use `--scale 1` for 1080-wide files.
 
 ---
 
 ## Options
 
 ```bash
-python3 scripts/render.py deck.md --check      # validate, render nothing
-python3 scripts/render.py deck.md -o out/      # output directory
-python3 scripts/render.py deck.md --pdf-only
-python3 scripts/render.py deck.md --png-only
-python3 scripts/render.py deck.md --scale 1
+node scripts/render.mjs deck.md --surface instagram
+node scripts/render.mjs deck.md --surface tiktok
+node scripts/render.mjs deck.md --surface all -o out/
+node scripts/render.mjs deck.md --check      # validate, render nothing
+node scripts/render.mjs deck.md -o out/      # output directory
+node scripts/render.mjs deck.md --pdf-only
+node scripts/render.mjs deck.md --png-only
+node scripts/render.mjs deck.md --scale 1
 ```
+
+Or set `surface: instagram` in the deck frontmatter. `--surface` on the command line wins.
 
 Override the browser with `CAROUSEL_CHROME=/path/to/chrome`. Fonts load from Google Fonts on first render; offline it falls back to system serif, sans, and mono.
 
@@ -168,7 +183,7 @@ cta          the line worth screenshotting
 Rendered decks (PDF + PNGs + post copy) live in [`carousels/`](../carousels). Example:
 
 ```bash
-python3 scripts/render.py ../carousels/carousel-press/carousel-press.deck.md
+node scripts/render.mjs ../carousels/carousel-press/carousel-press.deck.md
 ```
 
 ---

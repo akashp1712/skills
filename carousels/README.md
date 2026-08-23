@@ -9,5 +9,5 @@ Rendered LinkedIn decks. Each folder is the full kit: source `.deck.md`, the PDF
 Regenerate from this repo root:
 
 ```bash
-python3 carousel-press/scripts/render.py carousels/carousel-press/carousel-press.deck.md -o carousels/carousel-press
+node carousel-press/scripts/render.mjs carousels/carousel-press/carousel-press.deck.md -o carousels/carousel-press
 ```
