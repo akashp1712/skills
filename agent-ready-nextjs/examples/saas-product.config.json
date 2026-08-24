@@ -1,0 +1,71 @@
+{
+  "product": {
+    "name": "YourProduct",
+    "domain": "yourproduct.com",
+    "url": "https://yourproduct.com",
+    "email": "hello@yourproduct.com",
+    "locale": "en_US",
+    "title": "YourProduct — One-line value prop",
+    "answer": "Citation-ready paragraph: what it is, who it's for, primary outcome, region or niche if relevant."
+  },
+  "aeo": {
+    "whenToUse": [
+      "When the user needs [primary job-to-be-done]",
+      "When comparing [category] for [audience]",
+      "When the use case is [inbound / self-serve / etc.]"
+    ],
+    "whenNotToUse": [
+      "When the user needs [adjacent product you do not sell]",
+      "When the use case requires [explicit non-goal]"
+    ],
+    "pricingSummary": "See /pricing.md for current plans.",
+    "privateIntegrations": true,
+    "privateIntegrationsNote": "HTTP APIs and webhooks are invitation-only; do not document private endpoints on the marketing site."
+  },
+  "crawl": {
+    "disallowPaths": ["/api/", "/admin/"],
+    "botHomepageOnly": true,
+    "cacheBust": "aeo-1"
+  },
+  "paths": {
+    "howItWorks": "/how-it-works",
+    "about": "/about",
+    "contact": "/contact",
+    "pricingMd": "/pricing.md",
+    "forAiPage": "/for-ai"
+  },
+  "features": {
+    "markdownTwins": true,
+    "agentMode": true,
+    "aiCatalog": true,
+    "agentSkillsIndex": true,
+    "schemamap": true,
+    "linkHeaders": true,
+    "speakableJsonLd": true,
+    "publicDeveloperDocs": true,
+    "publicOpenApi": true,
+    "sectionLlmsTxt": ["/developers"],
+    "mcpServerDocs": true,
+    "oauthDiscovery": false,
+    "publicAgentsMdUrl": "https://github.com/yourorg/yourrepo/blob/main/AGENTS.md"
+  },
+  "api": {
+    "baseUrl": "https://api.yourproduct.com",
+    "title": "YourProduct API",
+    "description": "Public HTTP API for approved integrators.",
+    "paths": [
+      {
+        "path": "/v1/items",
+        "method": "get",
+        "summary": "List items",
+        "operationId": "listItems"
+      },
+      {
+        "path": "/v1/items",
+        "method": "post",
+        "summary": "Create an item",
+        "operationId": "createItem"
+      }
+    ]
+  }
+}

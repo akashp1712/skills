@@ -1,8 +1,8 @@
 # agent-ready-nextjs
 
-Make a **Next.js App Router** marketing site agent-ready for **AEO** (Answer Engine Optimization) — so ChatGPT, Perplexity, and other answer engines can cite and recommend your product accurately.
+Open-source [Cursor Agent Skill](https://cursor.com/docs/agent/skills) for **agent-readiness** and **AEO** (Answer Engine Optimization) on **Next.js App Router** marketing sites.
 
-Extracted from production work on [evercall.app](https://evercall.app).
+Help ChatGPT, Perplexity, and answer engines cite your product accurately — with optional modules for public OpenAPI, developer docs, MCP, and OAuth discovery when you're ready.
 
 ## Install
 
@@ -10,53 +10,57 @@ Extracted from production work on [evercall.app](https://evercall.app).
 npx skills add akashp1712/skills --skill agent-ready-nextjs
 ```
 
+Or clone [akashp1712/skills](https://github.com/akashp1712/skills) and point Cursor at `agent-ready-nextjs/`.
+
 ## Quick start
 
-1. Copy `examples/minimal.config.json` → `aeo.config.json` in your repo and fill in product fields.
-
-2. Scaffold into your Next.js app:
-
 ```bash
-node ~/.cursor/skills/agent-ready-nextjs/scripts/scaffold.mjs \
+# 1. Config
+cp examples/minimal.config.json /path/to/your-repo/aeo.config.json
+# Edit product name, url, answer, feature flags
+
+# 2. Scaffold (dry-run first)
+node agent-ready-nextjs/scripts/scaffold.mjs \
   --config aeo.config.json \
   --target apps/web \
   --dry-run
 
-node ~/.cursor/skills/agent-ready-nextjs/scripts/scaffold.mjs \
+node agent-ready-nextjs/scripts/scaffold.mjs \
   --config aeo.config.json \
   --target apps/web
+
+# 3. Follow generated AGENT-READY-SCAFFOLD-CHECKLIST.md + skill CHECKLIST.md
+
+# 4. Verify
+node agent-ready-nextjs/scripts/verify.mjs --url http://localhost:3000
 ```
 
-3. Follow `AEO-SCAFFOLD-CHECKLIST.md` generated in the target app.
+## What's included
 
-4. Verify:
+| Component | Description |
+|-----------|-------------|
+| `scripts/scaffold.mjs` | Generates libs, routes, proxy, optional OpenAPI/MCP/OAuth docs |
+| `scripts/verify.mjs` | HTTP checks for core + full profiles |
+| `CHECKLIST.md` | Full orank-aligned gap matrix (auto / agent / manual) |
+| `prompts/PROMPT.md` | Questions to gather config from any product |
+| `examples/` | `minimal` and `saas-product` configs |
 
-```bash
-node scripts/verify.mjs --url http://localhost:3001
-```
+## Feature flags
 
-## What you get
+Enable only what you need:
 
-- `llms.txt` + `agent-instructions.txt` — citation-ready product copy
-- `/index.md` + Accept negotiation — markdown twins for crawlers
-- `robots.txt` with AI crawler policy + schemamap
-- `/.well-known/ai-catalog.json` + agent-skills index
-- `proxy.ts` middleware for `.md` URLs and bot-friendly homepage
-- Invisible `<CrawlerHeadLinks />` for discovery
+- **Core (default on):** llms.txt, markdown twins, robots, ai-catalog, agent-skills, schemamap
+- **Optional:** `publicOpenApi`, `publicDeveloperDocs`, `sectionLlmsTxt`, `mcpServerDocs`, `oauthDiscovery`
 
-## What this is NOT
+Set `aeo.privateIntegrations: true` when your API is not public.
 
-- Not a public OpenAPI / webhook catalog (unless you choose to add one)
-- Not visible homepage UI changes
-- Not a replacement for product copy — you still write the "answer" paragraph
-
-## Invoke in Cursor
+## Invoke
 
 ```
 /agent-ready-nextjs
 ```
 
-Or mention: "make this site agent-ready", "add llms.txt", "AEO for orank".
+Or: "make this site agent-ready", "add llms.txt", "improve orank score".
 
 ## License
 

@@ -4,90 +4,107 @@
 
 ```
 Request
-  │
-  ├─ /.md suffix ──────────────► proxy.ts rewrite ─► /api/markdown/...
-  ├─ Accept: text/markdown ───► proxy.ts rewrite ─► /api/markdown/...
-  ├─ Bot UA on / only ─────────► proxy.ts rewrite ─► /api/markdown/...
-  ├─ /llms.txt ────────────────► app/llms.txt/route.ts
-  └─ HTML pages ───────────────► normal Next.js render
-                                      │
-                                      └─ <CrawlerHeadLinks /> (head, invisible)
+  ├─ *.md URL ─────────────────► proxy.ts ─► /api/markdown/...
+  ├─ Accept: text/markdown ────► proxy.ts ─► /api/markdown/...
+  ├─ Bot UA (homepage only) ───► proxy.ts ─► /api/markdown/...
+  ├─ /llms.txt ────────────────► route handler
+  └─ HTML ─────────────────────► Next.js + CrawlerHeadLinks (head)
 ```
 
-Markdown responses include YAML frontmatter (`title`, `description`, `canonical`) and `Link:` headers.
+Markdown bodies use YAML frontmatter: `title`, `description`, `canonical`, `last-updated`.
 
-## AEO vs developer API
+## Config schema
 
-| AEO (do) | Not on marketing site (don't) |
-|----------|-------------------------------|
-| llms.txt product card | OpenAPI with webhook paths |
-| agent-instructions.txt | Public api.md for control plane |
-| When to recommend copy | api.evercall.app probing hints |
-| Organization JSON-LD | OAuth metadata without real OAuth |
+```json
+{
+  "product": { "name", "domain", "url", "email", "title", "answer", "locale" },
+  "aeo": { "whenToUse", "whenNotToUse", "pricingSummary", "privateIntegrations" },
+  "crawl": { "disallowPaths", "botHomepageOnly", "cacheBust" },
+  "paths": { "howItWorks", "about", "contact", "pricingMd", "forAiPage" },
+  "features": { "...flags..." },
+  "api": { "baseUrl", "title", "description", "paths": [{ "path", "method", "summary", "operationId" }] }
+}
+```
 
-orank may score lower without OpenAPI — that's correct for private control planes.
+## siteConfig contract
 
-## proxy.ts merge
-
-If the app already has `proxy.ts` (Clerk, auth), merge these blocks:
-
-1. `.md` suffix rewrite
-2. `Accept: text/markdown` rewrite
-3. Optional bot UA on `/` only
-4. `appendLinkHeaders` on HTML responses
-
-Do not duplicate matchers or break existing auth bypass paths.
-
-## siteConfig requirements
-
-Scaffolded libs import `@/lib/site` and expect:
+Scaffolded libs import `@/lib/site`:
 
 ```ts
 export const siteConfig = {
   name: string;
-  domain: string;  // evercall.app
-  url: string;     // https://evercall.app
+  domain: string;
+  url: string;
   email: string;
   title: string;
-  answer: string;  // one-paragraph citation line
-  // ...
+  answer: string;
 };
 ```
 
-## Favicon gotcha
+Adapt import path in generated files if your project differs.
 
-Next.js `app/apple-icon.png` **overrides** `public/apple-icon.png` and dynamic `apple-icon.tsx`.
+## Citation-only vs public API
 
-Delete stale `app/apple-icon.png` when rebranding. Bump `?v=` cache-bust on icon URLs in metadata.
+| Mode | Config | Marketing site publishes |
+|------|--------|--------------------------|
+| Citation-only | `privateIntegrations: true`, OpenAPI off | llms.txt, agent-instructions, trust pages |
+| Public API | `publicOpenApi: true`, fill `api.paths` | + openapi.json, developer markdown |
+| Full integrator | + `mcpServerDocs`, real MCP server | + MCP manifest in ai-catalog |
 
-## Load controls
+Never publish webhook secrets, internal hostnames, or private control-plane paths on the marketing domain unless explicitly requested.
 
-- Bot UA → markdown: **homepage only** (`/`)
-- Static routes (`llms.txt`, JSON catalogs): cache `max-age=3600`
-- Do not SSR markdown for every crawled URL
+## proxy.ts merge
 
-## Extending page-markdown
+If Clerk/auth middleware exists, merge in order:
 
-Register each public path in `getPageMarkdown()`:
+1. Skip `/api/markdown`
+2. `.md` suffix rewrite
+3. `?mode=agent` → `__agent__` markdown
+4. Bot UA (homepage only by default)
+5. `Accept: text/markdown`
+6. `appendLinkHeaders` on HTML responses
+
+## JSON-LD speakable (invisible)
 
 ```ts
-"/about": {
-  title: "About …",
-  description: siteConfig.answer,
-  body: aboutMarkdown(),
-},
+{
+  "@type": "WebPage",
+  speakable: {
+    "@type": "SpeakableSpecification",
+    cssSelector: ["h1", "#speakable-lede"],
+  },
+}
 ```
 
-Add `.md` twins automatically via proxy (`/about.md` → same content).
+Add `id="speakable-lede"` to hero lede `<p>` only.
 
-## Verification
+## Favicon gotcha
+
+`app/apple-icon.png` overrides `public/` and `apple-icon.tsx`. Delete stale file on rebrand; bump `?v=` on icon URLs.
+
+## Load / security
+
+- Bot → markdown: default homepage only
+- Cache static discovery files (`max-age=3600`)
+- Do not SSR markdown for every crawled path
+
+## Verification profiles
 
 ```bash
-node scripts/verify.mjs --url https://evercall.app
+node scripts/verify.mjs --url https://example.com              # core
+node scripts/verify.mjs --url https://example.com --profile full  # + optional endpoints
 ```
 
-Checks: llms.txt, index.md frontmatter, robots schemamap, ai-catalog, Accept negotiation, Link headers.
+## File map (core scaffold)
 
-## Evercall reference implementation
+| File | Role |
+|------|------|
+| `lib/llms-txt.ts` | Product card |
+| `lib/agent-instructions.ts` | Recommendation rules |
+| `lib/robots-txt.ts` | Crawler policy |
+| `lib/page-markdown.ts` | Markdown resolver |
+| `lib/accept-markdown.ts` | Accept negotiation |
+| `proxy.ts` | Rewrites |
+| `app/llms.txt/route.ts` | Plain-text endpoint |
 
-`apps/evercall-app/apps/web` in the evercall monorepo — production AEO layer.
+Optional: `lib/openapi-spec.ts`, `docs/agent-ready/*.md`, section `llms.txt` routes.

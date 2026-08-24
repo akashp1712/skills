@@ -3,7 +3,7 @@
  * Scaffold AEO / agent-readiness layer for a Next.js App Router marketing site.
  *
  * Usage:
- *   node scripts/scaffold.mjs --config examples/evercall.config.json --target apps/web
+ *   node scripts/scaffold.mjs --config examples/saas-product.config.json --target apps/web
  *
  * Options:
  *   --config   Path to JSON config (required)
@@ -258,14 +258,17 @@ export function agentSkillsIndexJson() {
 `;
 }
 
-function renderLinkHeaders() {
+function renderLinkHeaders(c) {
+  const extra = c.features?.publicOpenApi
+    ? `\n    \`<\${siteConfig.url}/openapi.json>; rel="service-desc"; type="application/json"\`,`
+    : "";
   return `import { siteConfig } from "@/lib/site";
 
 export function appendLinkHeaders(headers: Headers): Headers {
   const links = [
     \`<\${siteConfig.url}/sitemap.xml>; rel="sitemap"\`,
     \`<\${siteConfig.url}/index.md>; rel="alternate"; type="text/markdown"\`,
-    \`<\${siteConfig.url}/llms.txt>; rel="alternate"; type="text/plain"\`,
+    \`<\${siteConfig.url}/llms.txt>; rel="alternate"; type="text/plain"\`,${extra}
     \`<\${siteConfig.url}/.well-known/ai-catalog.json>; rel="ai-catalog"; type="application/json"\`,
   ];
   const existing = headers.get("Link");
@@ -539,7 +542,10 @@ export async function GET(_req: Request, context: RouteContext) {
 `;
 }
 
-function crawlerHeadLinks() {
+function crawlerHeadLinks(c) {
+  const openApi = c.features?.publicOpenApi
+    ? `\n      <link href={\`\${siteConfig.url}/openapi.json\`} rel="service-desc" type="application/json" title="OpenAPI" />`
+    : "";
   return `import { siteConfig } from "@/lib/site";
 
 export function CrawlerHeadLinks() {
@@ -547,15 +553,227 @@ export function CrawlerHeadLinks() {
     <>
       <link href={\`\${siteConfig.url}/index.md\`} rel="alternate" type="text/markdown" title="Homepage markdown" />
       <link href={\`\${siteConfig.url}/llms.txt\`} rel="alternate" type="text/plain" title="llms.txt" />
-      <link href={\`\${siteConfig.url}/agent-instructions.txt\`} rel="alternate" type="text/plain" title="Agent instructions" />
+      <link href={\`\${siteConfig.url}/agent-instructions.txt\`} rel="alternate" type="text/plain" title="Agent instructions" />${openApi}
     </>
   );
 }
 `;
 }
 
+function withDefaults(raw) {
+  return {
+    ...raw,
+    features: {
+      markdownTwins: true,
+      agentMode: true,
+      aiCatalog: true,
+      agentSkillsIndex: true,
+      schemamap: true,
+      linkHeaders: true,
+      speakableJsonLd: true,
+      publicDeveloperDocs: false,
+      publicOpenApi: false,
+      sectionLlmsTxt: [],
+      mcpServerDocs: false,
+      oauthDiscovery: false,
+      publicAgentsMdUrl: null,
+      ...raw.features,
+    },
+    api: raw.api ?? {
+      baseUrl: "",
+      title: "API",
+      description: "HTTP API",
+      paths: [],
+    },
+  };
+}
+
+function renderOpenApiSpec(c) {
+  const paths = {};
+  for (const p of c.api.paths ?? []) {
+    const key = p.path;
+    paths[key] = paths[key] ?? {};
+    paths[key][p.method.toLowerCase()] = {
+      operationId: p.operationId,
+      summary: p.summary,
+      responses: {
+        "200": { description: "OK" },
+        "400": {
+          description: "Bad request",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/Error" },
+            },
+          },
+        },
+      },
+    };
+  }
+  return `import { siteConfig } from "@/lib/site";
+
+export function openApiSpec() {
+  return {
+    openapi: "3.1.0",
+    info: {
+      title: ${JSON.stringify(c.api.title)},
+      version: "1.0.0",
+      description: ${JSON.stringify(c.api.description)},
+      contact: { email: siteConfig.email, url: siteConfig.url },
+    },
+    servers: [{ url: ${JSON.stringify(c.api.baseUrl)} }],
+    components: {
+      schemas: {
+        Error: {
+          type: "object",
+          properties: {
+            error: { type: "string" },
+            message: { type: "string" },
+            resolution: { type: "string" },
+          },
+          required: ["error"],
+        },
+      },
+    },
+    paths: ${JSON.stringify(paths, null, 2)},
+  };
+}
+`;
+}
+
+function renderDeveloperMarkdown(c) {
+  return `import { siteConfig } from "@/lib/site";
+
+/** Public developer / integrator docs — customize per product. */
+export function developerMarkdown(): string {
+  return \`# \${siteConfig.name} — developer documentation
+
+> \${siteConfig.answer}
+
+## OpenAPI
+
+\${siteConfig.url}/openapi.json
+
+## Authentication
+
+Request API credentials from \${siteConfig.email}.
+
+## Support
+
+\${siteConfig.url}/contact
+\`;
+}
+`;
+}
+
+function renderMcpDocs(c) {
+  return `# MCP server (optional)
+
+Your product can expose a [Model Context Protocol](https://modelcontextprotocol.io) server so Claude, ChatGPT, and other agents call your API as tools.
+
+## When to add MCP
+
+- You have a **public** HTTP API with documented auth
+- Integrators want native tool calling, not just OpenAPI
+
+## When to skip
+
+- API is private or invitation-only
+- Marketing site is citation-only (AEO)
+
+## Next steps
+
+1. Implement tools against your real API (separate service or route handlers).
+2. Publish transport (Streamable HTTP recommended).
+3. Add entry to \`/.well-known/ai-catalog.json\`.
+4. Document manifest URL in \`llms.txt\`.
+
+See MCP SDK docs for your language.
+`;
+}
+
+function renderOAuthDocs(c) {
+  return `# OAuth discovery (optional)
+
+Only publish \`/.well-known/oauth-authorization-server\` and \`/.well-known/oauth-protected-resource\` when you operate a real OAuth authorization server.
+
+Follow RFC 8414 (authorization server) and RFC 9728 (protected resource). For agent auth metadata, see WorkOS auth.md \`agent_auth\` blocks.
+
+Do not ship placeholder metadata in production — scanners and agents will treat it as live.
+`;
+}
+
+function renderSectionLlmsRoute(sectionPath) {
+  const importName = sectionPath.replace(/\//g, "_").replace(/^_/, "") || "root";
+  return `import { siteConfig } from "@/lib/site";
+
+export function GET() {
+  const body = \`# \${siteConfig.name} — ${sectionPath}
+
+Scoped llms.txt for this section. Link from main llms.txt.
+
+- Main card: \${siteConfig.url}/llms.txt
+\`;
+  return new Response(body, {
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+`;
+}
+
 function renderAcceptMarkdown() {
   return fs.readFileSync(path.join(__dirname, "lib", "accept-markdown.ts"), "utf8");
+}
+
+function buildFileList(c) {
+  const f = c.features;
+  const files = [
+    ["lib/llms-txt.ts", renderLlmsTxt(c)],
+    ["lib/agent-instructions.ts", renderAgentInstructions(c)],
+    ["lib/robots-txt.ts", renderRobotsTxt(c)],
+    ["lib/link-headers.ts", renderLinkHeaders(c)],
+    ["lib/markdown-response.ts", renderMarkdownResponse()],
+    ["lib/bot-user-agents.ts", renderBotUserAgents()],
+    ["lib/page-markdown.ts", renderPageMarkdown(c)],
+    ["lib/accept-markdown.ts", renderAcceptMarkdown()],
+    ["proxy.ts", renderProxy(c)],
+    ["app/llms.txt/route.ts", routeTs("@/lib/llms-txt", "llmsTxt")],
+    ["app/llms-full.txt/route.ts", routeTs("@/lib/llms-txt", "llmsFullTxt")],
+    ["app/agent-instructions.txt/route.ts", routeTs("@/lib/agent-instructions", "agentInstructionsTxt")],
+    ["app/robots.txt/route.ts", `import { robotsTxt } from "@/lib/robots-txt";\n\nexport function GET() {\n  return new Response(robotsTxt(), {\n    headers: { "Content-Type": "text/plain; charset=utf-8" },\n  });\n}\n`],
+    ["app/api/markdown/[[...slug]]/route.ts", markdownApiRoute()],
+    ["components/seo/crawler-head-links.tsx", crawlerHeadLinks(c)],
+  ];
+
+  if (f.aiCatalog) {
+    files.push(["lib/ai-catalog.ts", renderAiCatalog(c)]);
+    files.push(["app/.well-known/ai-catalog.json/route.ts", jsonRoute("@/lib/ai-catalog", "aiCatalogJson")]);
+  }
+  if (f.agentSkillsIndex) {
+    files.push(["lib/agent-skills-index.ts", renderAgentSkills(c)]);
+    files.push(["app/.well-known/agent-skills/index.json/route.ts", jsonRoute("@/lib/agent-skills-index", "agentSkillsIndexJson")]);
+  }
+  if (f.schemamap) {
+    files.push(["app/schemamap.xml/route.ts", schemamapRoute()]);
+  }
+  if (f.publicOpenApi) {
+    files.push(["lib/openapi-spec.ts", renderOpenApiSpec(c)]);
+    files.push(["app/openapi.json/route.ts", jsonRoute("@/lib/openapi-spec", "openApiSpec")]);
+  }
+  if (f.publicDeveloperDocs) {
+    files.push(["lib/developer-markdown.ts", renderDeveloperMarkdown(c)]);
+    files.push(["app/api.md/route.ts", routeTs("@/lib/developer-markdown", "developerMarkdown", "text/markdown")]);
+  }
+  if (f.mcpServerDocs) {
+    files.push(["docs/agent-ready/MCP.md", renderMcpDocs(c)]);
+  }
+  if (f.oauthDiscovery) {
+    files.push(["docs/agent-ready/OAUTH-DISCOVERY.md", renderOAuthDocs(c)]);
+  }
+  for (const section of f.sectionLlmsTxt ?? []) {
+    const clean = section.replace(/^\//, "").replace(/\/$/, "");
+    files.push([`app/${clean}/llms.txt/route.ts`, renderSectionLlmsRoute(section)]);
+  }
+  return files;
 }
 
 function manifestSnippet(cacheBust) {
@@ -572,7 +790,7 @@ alternates: {
 }
 
 const args = parseArgs(process.argv);
-const config = JSON.parse(fs.readFileSync(path.resolve(args.config), "utf8"));
+const config = withDefaults(JSON.parse(fs.readFileSync(path.resolve(args.config), "utf8")));
 const targetRoot = path.resolve(args.target);
 const written = [];
 
@@ -584,55 +802,36 @@ if (!fs.existsSync(targetRoot)) {
   }
 }
 
-const files = [
-  ["lib/llms-txt.ts", renderLlmsTxt(config)],
-  ["lib/agent-instructions.ts", renderAgentInstructions(config)],
-  ["lib/robots-txt.ts", renderRobotsTxt(config)],
-  ["lib/ai-catalog.ts", renderAiCatalog(config)],
-  ["lib/agent-skills-index.ts", renderAgentSkills(config)],
-  ["lib/link-headers.ts", renderLinkHeaders()],
-  ["lib/markdown-response.ts", renderMarkdownResponse()],
-  ["lib/bot-user-agents.ts", renderBotUserAgents()],
-  ["lib/page-markdown.ts", renderPageMarkdown(config)],
-  ["lib/accept-markdown.ts", renderAcceptMarkdown()],
-  ["proxy.ts", renderProxy(config)],
-  ["app/llms.txt/route.ts", routeTs("@/lib/llms-txt", "llmsTxt")],
-  ["app/llms-full.txt/route.ts", routeTs("@/lib/llms-txt", "llmsFullTxt")],
-  ["app/agent-instructions.txt/route.ts", routeTs("@/lib/agent-instructions", "agentInstructionsTxt")],
-  ["app/robots.txt/route.ts", `import { robotsTxt } from "@/lib/robots-txt";\n\nexport function GET() {\n  return new Response(robotsTxt(), {\n    headers: { "Content-Type": "text/plain; charset=utf-8" },\n  });\n}\n`],
-  ["app/schemamap.xml/route.ts", schemamapRoute()],
-  ["app/.well-known/ai-catalog.json/route.ts", jsonRoute("@/lib/ai-catalog", "aiCatalogJson")],
-  ["app/.well-known/agent-skills/index.json/route.ts", jsonRoute("@/lib/agent-skills-index", "agentSkillsIndexJson")],
-  ["app/api/markdown/[[...slug]]/route.ts", markdownApiRoute()],
-  ["components/seo/crawler-head-links.tsx", crawlerHeadLinks()],
-];
+const files = buildFileList(config);
 
 for (const [rel, content] of files) {
   writeFile(targetRoot, rel, content, { dryRun: args.dryRun, force: args.force, written });
 }
 
-const checklistPath = path.join(targetRoot, "AEO-SCAFFOLD-CHECKLIST.md");
-const checklist = `# AEO scaffold checklist
+const checklist = `# Agent-ready scaffold checklist
 
-Generated by agent-ready-nextjs. Delete this file after setup.
+Generated by agent-ready-nextjs. See skill CHECKLIST.md for the full orank-aligned matrix.
 
-## Required manual steps
+## Wire-up (required)
 
-1. **siteConfig** — ensure \`lib/site.ts\` exports \`name\`, \`domain\`, \`url\`, \`email\`, \`answer\`, \`title\`.
-2. **Root layout** — add \`<CrawlerHeadLinks />\` inside \`<head>\` from \`@/components/seo/crawler-head-links\`.
-3. **SEO metadata** — set markdown alternate to \`/index.md\` (not \`/\`):
+1. \`lib/site.ts\` — \`name\`, \`domain\`, \`url\`, \`email\`, \`answer\`, \`title\`
+2. Root \`layout.tsx\` — \`<CrawlerHeadLinks />\` in \`<head>\` (invisible)
+3. SEO alternates — markdown → \`/index.md\`, not \`/\`
 ${manifestSnippet(config.crawl.cacheBust)}
-4. **proxy.ts** — if one already existed, merge middleware logic instead of overwriting.
-5. **page-markdown.ts** — add routes for your trust pages (${config.paths.about}, ${config.paths.contact}, etc.).
-6. **JSON-LD** — add WebPage speakable + Organization schema (see skill reference.md).
-7. **Favicon** — delete stale \`app/apple-icon.png\` if present (old mark overrides Capture).
-8. **Tests** — run \`pnpm test\` and \`node path/to/agent-ready-nextjs/scripts/verify.mjs --url ${config.product.url}\`
-9. **Private APIs** — do NOT publish webhooks/OpenAPI on the marketing site unless intentionally public.
+4. Merge \`proxy.ts\` if the app already had middleware
+5. Extend \`page-markdown.ts\` for ${config.paths.about}, ${config.paths.contact}, ${config.paths.howItWorks}
+6. JSON-LD speakable when \`features.speakableJsonLd\` (see skill reference.md)
+7. Delete stale \`app/apple-icon.png\` if rebranding favicons
+
+## Feature flags in this run
+
+${JSON.stringify(config.features, null, 2)}
 
 ## Verify
 
 \`\`\`bash
-node ${path.relative(targetRoot, path.join(__dirname, "verify.mjs"))} --url ${config.product.url}
+node scripts/verify.mjs --url ${config.product.url}
+node scripts/verify.mjs --url ${config.product.url} --profile full
 \`\`\`
 `;
 

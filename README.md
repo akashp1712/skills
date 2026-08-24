@@ -93,9 +93,9 @@ npx shadcn@latest add skeleton
 **Make Next.js sites citeable by ChatGPT, Perplexity, and answer engines** — llms.txt, markdown twins, robots policy, discovery catalogs. Scaffold script writes most files; you customize product copy.
 
 - **📄 Scaffold**: `node scripts/scaffold.mjs --config aeo.config.json --target apps/web`
-- **🔒 Secure by default**: product citation only — no public webhook/OpenAPI unless you opt in
-- **✅ Verify**: `node scripts/verify.mjs --url https://yoursite.com`
-- **🧪 Battle-tested**: extracted from [evercall.app](https://evercall.app) production AEO work
+- **🎛️ Feature flags**: citation-only default; optional OpenAPI, MCP docs, OAuth guides, section llms.txt
+- **✅ Verify**: `node scripts/verify.mjs --url https://yoursite.com --profile full`
+- **📋 Full checklist**: orank-aligned matrix in `CHECKLIST.md`
 
 **Install**: `npx skills add akashp1712/skills --skill agent-ready-nextjs`
 

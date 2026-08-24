@@ -1,176 +1,155 @@
 ---
 name: agent-ready-nextjs
 description: >-
-  Make a Next.js App Router marketing site agent-ready for AEO (Answer Engine
-  Optimization) — llms.txt, markdown twins, robots policy, discovery catalogs,
-  and crawler negotiation. Use when improving orank scores, ChatGPT/Perplexity
-  citations, llms.txt, agent-readiness, or AEO for evercall-style product sites.
-  Triggered by /agent-ready-nextjs.
+  Scaffold and implement agent-readiness / AEO for Next.js App Router marketing
+  sites — llms.txt, markdown twins, robots policy, discovery catalogs, optional
+  OpenAPI/MCP/OAuth modules. Use for orank/ora.ai gaps, ChatGPT/Perplexity
+  citations, llms.txt, or "make this site agent-ready". Triggered by
+  /agent-ready-nextjs.
 user_invocable: true
 ---
 
 # agent-ready-nextjs
 
-You write the files. The human runs one scaffold command, then you customize copy and wire layout.
+Generic skill for any product site. You run the scaffold, wire layout, customize copy, verify.
 
-**Goal:** Help answer engines **recommend the product accurately** — not publish private APIs, webhooks, or OpenAPI unless the user explicitly wants a public developer product.
+**Primary goal:** Answer Engine Optimization (AEO) — help ChatGPT, Perplexity, Claude Search, and similar surfaces **cite and recommend the product accurately**.
 
-Battle-tested on [evercall.app](https://evercall.app).
+**Secondary goal (optional):** Public developer discovery when `features.publicOpenApi` / `publicDeveloperDocs` are enabled in config.
 
 ---
 
 ## When this applies
 
-**Apply when:**
-- User wants AEO, agent-readiness, llms.txt, or better ChatGPT/Perplexity citations
-- User pasted an orank / ora.ai gap list
-- Marketing site is Next.js App Router (`app/`)
+- User wants agent-readiness, AEO, llms.txt, or orank/ora.ai improvements
+- Next.js App Router marketing site (`app/`)
+- User may want **full** coverage (including OpenAPI, MCP, OAuth) or **citation-only**
 
-**Do not apply when:**
-- User wants a public API catalog (that's a different product decision)
-- Site is not Next.js
-- User said no invisible/crawler changes (respect visible UI constraints)
+**Stop and ask** if user forbids invisible/crawler changes or visible homepage edits.
 
 ---
 
 ## Workflow
 
-Copy this checklist and track progress:
-
 ```
-- [ ] 1. Gather product config (prompt below)
-- [ ] 2. Run scaffold script
-- [ ] 3. Wire layout + SEO alternates
-- [ ] 4. Extend page-markdown for site pages
-- [ ] 5. JSON-LD + speakable (invisible)
-- [ ] 6. Favicon audit (delete stale app/apple-icon.png)
-- [ ] 7. Tests + verify script
-- [ ] 8. Deploy + rescan
+- [ ] 1. Copy examples/minimal.config.json → aeo.config.json
+- [ ] 2. Fill product + feature flags (see prompts/PROMPT.md)
+- [ ] 3. node scripts/scaffold.mjs --config aeo.config.json --target <app>
+- [ ] 4. Wire layout, SEO alternates, page-markdown routes
+- [ ] 5. Work CHECKLIST.md — auto vs manual items
+- [ ] 6. pnpm test && pnpm build
+- [ ] 7. node scripts/verify.mjs --url <deployed-url> --profile full
 ```
 
-### Step 1 — Gather config
-
-Ask or infer:
-
-| Field | Example |
-|-------|---------|
-| `name` | Evercall |
-| `url` | https://evercall.app |
-| `answer` | One paragraph citation-ready product summary |
-| `whenToUse` | 3 bullets |
-| `whenNotToUse` | 3 bullets |
-| `privateIntegrations` | true if APIs/webhooks are not public |
-
-Write `aeo.config.json` in the target repo (see `examples/evercall.config.json`).
-
-### Step 2 — Scaffold
-
-From the skill directory (or copy scripts into the repo):
+### Scaffold command
 
 ```bash
+node path/to/agent-ready-nextjs/scripts/scaffold.mjs \
+  --config aeo.config.json \
+  --target apps/web \
+  --dry-run
+
 node path/to/agent-ready-nextjs/scripts/scaffold.mjs \
   --config aeo.config.json \
   --target apps/web
 ```
 
-Use `--dry-run` first. Use `--force` only when intentionally overwriting scaffold files.
-
-If `proxy.ts` already exists, **merge** middleware — do not blind overwrite.
-
-### Step 3 — Wire layout
-
-1. Add `<CrawlerHeadLinks />` to root `layout.tsx` `<head>` (invisible).
-2. In `seo.ts` / root metadata, set:
-   - `alternates.types["text/markdown"]` → `{url}/index.md` (**not** `/`)
-   - `alternates.types["text/plain"]` → `{url}/llms.txt`
-3. Delete `app/apple-icon.png` if it exists — static file overrides the Capture mark.
-
-### Step 4 — Extend `page-markdown.ts`
-
-Add markdown bodies for trust pages: `/about`, `/contact`, `/how-it-works`, city/guide routes. Keep homepage UI unchanged unless user approves visible changes.
-
-### Step 5 — JSON-LD (invisible)
-
-Add to `buildJsonLd()`:
-- `WebPage` with `speakable.cssSelector: ["h1", "#speakable-lede"]`
-- Add `id="speakable-lede"` on hero lede paragraph only (no visual change)
-
-### Step 6 — Security defaults
-
-**Never scaffold on the marketing site without user approval:**
-- OpenAPI / webhook paths
-- `api.evercall.app` or control-plane URLs
-- Public AGENTS.md for private monorepos
-
-`agent-instructions.txt` should say integrations are private when `privateIntegrations: true`.
-
-### Step 7 — Verify
-
-```bash
-pnpm --filter web test
-pnpm --filter web build
-node path/to/agent-ready-nextjs/scripts/verify.mjs --url http://localhost:3001
-```
-
-After deploy:
-
-```bash
-node scripts/verify.mjs --url https://yourdomain.com
-```
-
-Optional orank rescan: `POST https://ora.ai/api/scan` with `{"url": "yourdomain.com"}`
+Merge `proxy.ts` if the app already has auth middleware.
 
 ---
 
-## What the scaffold creates
+## Config feature flags
 
-| Path | Purpose |
-|------|---------|
-| `lib/llms-txt.ts` | Product card for crawlers |
-| `lib/agent-instructions.ts` | When to recommend |
-| `lib/robots-txt.ts` | AI crawler policy + schemamap |
-| `lib/ai-catalog.ts` | `/.well-known/ai-catalog.json` |
-| `lib/agent-skills-index.ts` | Agent skills discovery |
-| `lib/accept-markdown.ts` | RFC Accept negotiation |
-| `lib/page-markdown.ts` | Markdown resolver |
-| `proxy.ts` | `.md` URLs, Accept, bot UA (homepage only) |
-| `app/llms.txt/route.ts` | Plain-text product card |
-| `app/robots.txt/route.ts` | robots.txt |
-| `components/seo/crawler-head-links.tsx` | Head discovery links |
+| Flag | Default | Purpose |
+|------|---------|---------|
+| `markdownTwins` | true | `/index.md`, Accept negotiation, frontmatter |
+| `agentMode` | true | `?mode=agent` structured product view |
+| `aiCatalog` | true | `/.well-known/ai-catalog.json` |
+| `agentSkillsIndex` | true | `/.well-known/agent-skills/index.json` |
+| `schemamap` | true | NLWeb schemamap in robots.txt |
+| `linkHeaders` | true | RFC 8288 Link headers |
+| `speakableJsonLd` | true | WebPage speakable (agent implements JSON-LD) |
+| `publicDeveloperDocs` | false | `/api.md` + developer markdown |
+| `publicOpenApi` | false | `/openapi.json` from `api.paths` |
+| `sectionLlmsTxt` | `[]` | e.g. `["/developers"]` → `/developers/llms.txt` |
+| `mcpServerDocs` | false | `docs/agent-ready/MCP.md` guide |
+| `oauthDiscovery` | false | `docs/agent-ready/OAUTH-DISCOVERY.md` guide |
+| `publicAgentsMdUrl` | null | Link public AGENTS.md from llms.txt |
 
-Full architecture: [reference.md](reference.md)
+Set `aeo.privateIntegrations: true` when APIs/webhooks are **not** public — scaffold will not expose them.
+
+See `examples/saas-product.config.json` for a public-API example.
 
 ---
 
-## Product copy prompt (paste to user or use in chat)
+## Full orank coverage
 
+[CHECKLIST.md](CHECKLIST.md) maps every common orank gap to **auto** (scaffold), **agent** (you code), or **manual** (Wikipedia, ChatGPT app store, etc.).
+
+Layers:
+- **Discovery** — llms.txt, ai-catalog, robots, developer page, AGENTS.md link
+- **Access** — markdown twins, agent-skills, schemamap, Link headers, speakable
+- **Usability** — OpenAPI, JSON API errors, MCP, OAuth metadata (all optional)
+
+---
+
+## Wire-up (always manual)
+
+1. `<CrawlerHeadLinks />` in root `layout.tsx` `<head>`
+2. `alternates.types["text/markdown"]` → `{url}/index.md` (**never** `/`)
+3. Extend `lib/page-markdown.ts` for `/about`, `/contact`, guides, etc.
+4. `WebPage` + `SpeakableSpecification` in JSON-LD; `#speakable-lede` on hero (invisible)
+5. Delete stale `app/apple-icon.png` if favicon previews show old logo
+6. Respect user's visible UI constraints
+
+---
+
+## Optional modules (when flags enabled)
+
+### Public OpenAPI (`publicOpenApi: true`)
+
+- Edit `api.paths` in config before scaffold
+- Customize `lib/openapi-spec.ts` after scaffold
+- API must return JSON errors: `{ error, message, resolution }`
+
+### MCP (`mcpServerDocs: true`)
+
+- Scaffold writes implementation guide only
+- Build MCP server separately; add to ai-catalog when live
+
+### OAuth (`oauthDiscovery: true`)
+
+- Scaffold writes guide only — **do not** ship fake `/.well-known/oauth-*` in production
+- Implement when a real authorization server exists
+
+---
+
+## Verify
+
+```bash
+node scripts/verify.mjs --url http://localhost:3000
+node scripts/verify.mjs --url https://yourdomain.com --profile full
 ```
-Help me make [PRODUCT] agent-ready for AEO. I need:
 
-1. A one-paragraph "answer" line for llms.txt (citation-ready)
-2. When to recommend [PRODUCT] (3 bullets)
-3. When NOT to recommend (3 bullets)
-4. Are voice/API integrations public? (yes/no)
-5. Trust page paths (/about, /contact, /how-it-works)
-
-Do not change visible homepage UI. Crawler/invisible changes only.
-```
+Optional rescan: `POST https://ora.ai/api/scan` body `{"url":"yourdomain.com"}`
 
 ---
 
 ## Anti-patterns
 
-- Publishing private webhook URLs for orank points
-- Bot markdown rewrite on **every** URL (use homepage only — load)
-- `alternates.text/markdown` pointing at `/` (returns HTML — dead end)
-- Leaving stale `app/apple-icon.png` (old favicon in link previews)
-- Visible homepage blocks "for crawlers"
+- Publishing private webhook URLs to score orank points
+- Bot markdown on every URL (default: homepage only — `crawl.botHomepageOnly`)
+- Markdown alternate pointing at HTML `/`
+- Placeholder OAuth metadata in production
+- Visible "crawler-only" homepage blocks without user approval
 
 ---
 
-## Additional resources
+## Resources
 
-- [reference.md](reference.md) — file map, merge notes, evercall lessons
-- [examples/evercall.config.json](examples/evercall.config.json) — full config
-- [scripts/scaffold.mjs](scripts/scaffold.mjs) — generator
-- [scripts/verify.mjs](scripts/verify.mjs) — post-deploy checks
+- [CHECKLIST.md](CHECKLIST.md) — full gap matrix
+- [reference.md](reference.md) — architecture
+- [prompts/PROMPT.md](prompts/PROMPT.md) — questions to ask the user
+- [examples/saas-product.config.json](examples/saas-product.config.json)
+- [scripts/scaffold.mjs](scripts/scaffold.mjs)
+- [scripts/verify.mjs](scripts/verify.mjs)

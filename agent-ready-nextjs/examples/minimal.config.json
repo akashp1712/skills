@@ -26,5 +26,26 @@
     "contact": "/contact",
     "pricingMd": "/pricing.md",
     "forAiPage": "/for-ai"
+  },
+  "features": {
+    "markdownTwins": true,
+    "agentMode": true,
+    "aiCatalog": true,
+    "agentSkillsIndex": true,
+    "schemamap": true,
+    "linkHeaders": true,
+    "speakableJsonLd": true,
+    "publicDeveloperDocs": false,
+    "publicOpenApi": false,
+    "sectionLlmsTxt": [],
+    "mcpServerDocs": false,
+    "oauthDiscovery": false,
+    "publicAgentsMdUrl": null
+  },
+  "api": {
+    "baseUrl": "https://api.acme.example",
+    "title": "Acme API",
+    "description": "HTTP API for integrators. Request access via email.",
+    "paths": []
   }
 }

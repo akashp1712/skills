@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * Verify AEO endpoints on a deployed site.
+ * Verify agent-readiness endpoints.
  *
  * Usage:
- *   node scripts/verify.mjs --url https://evercall.app
- *   node scripts/verify.mjs --url http://localhost:3001
+ *   node scripts/verify.mjs --url https://example.com
+ *   node scripts/verify.mjs --url http://localhost:3000 --profile full
  */
 
-const checks = [
+const CORE_CHECKS = [
   {
     name: "llms.txt",
     path: "/llms.txt",
@@ -60,16 +60,43 @@ const checks = [
   },
 ];
 
+const FULL_CHECKS = [
+  {
+    name: "openapi.json (optional)",
+    path: "/openapi.json",
+    expectStatus: 200,
+    bodyIncludes: ['"openapi"'],
+    optional: true,
+  },
+  {
+    name: "schemamap.xml",
+    path: "/schemamap.xml",
+    expectStatus: 200,
+    bodyIncludes: ["<schemamap"],
+  },
+  {
+    name: "agent mode query",
+    path: "/?mode=agent",
+    headers: { Accept: "text/html" },
+    expectStatus: 200,
+    optional: true,
+  },
+];
+
 function parseArgs(argv) {
   let url = null;
+  let profile = "core";
   for (let i = 2; i < argv.length; i++) {
     if (argv[i] === "--url") url = argv[++i];
+    else if (argv[i] === "--profile") profile = argv[++i];
   }
   if (!url) {
-    console.error("Usage: node scripts/verify.mjs --url https://example.com");
+    console.error(
+      "Usage: node scripts/verify.mjs --url https://example.com [--profile core|full]"
+    );
     process.exit(1);
   }
-  return url.replace(/\/$/, "");
+  return { base: url.replace(/\/$/, ""), profile };
 }
 
 async function runCheck(base, check) {
@@ -103,30 +130,37 @@ async function runCheck(base, check) {
     }
   }
 
-  return { name: check.name, ok: failures.length === 0, failures };
+  return { name: check.name, ok: failures.length === 0, failures, optional: check.optional };
 }
 
-const base = parseArgs(process.argv);
+const { base, profile } = parseArgs(process.argv);
+const checks = profile === "full" ? [...CORE_CHECKS, ...FULL_CHECKS] : CORE_CHECKS;
 let failed = 0;
 
-console.log(`Verifying ${base}\n`);
+console.log(`Verifying ${base} (profile: ${profile})\n`);
 
 for (const check of checks) {
   try {
     const result = await runCheck(base, check);
     if (result.ok) {
       console.log(`✓ ${result.name}`);
+    } else if (result.optional) {
+      console.log(`○ ${result.name} (optional — skipped)`);
     } else {
       failed++;
       console.log(`✗ ${result.name}`);
       for (const f of result.failures) console.log(`    ${f}`);
     }
   } catch (err) {
-    failed++;
-    console.log(`✗ ${check.name}`);
-    console.log(`    ${err.message}`);
+    if (check.optional) {
+      console.log(`○ ${check.name} (optional — ${err.message})`);
+    } else {
+      failed++;
+      console.log(`✗ ${check.name}`);
+      console.log(`    ${err.message}`);
+    }
   }
 }
 
-console.log(failed ? `\n${failed} check(s) failed` : "\nAll checks passed");
+console.log(failed ? `\n${failed} required check(s) failed` : "\nAll required checks passed");
 process.exit(failed ? 1 : 0);
