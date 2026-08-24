@@ -89,6 +89,20 @@ npx shadcn@latest add skeleton
 
 ---
 
+### 🤖 **agent-ready-nextjs** — AEO / Agent-Ready Marketing Sites
+**Make Next.js sites citeable by ChatGPT, Perplexity, and answer engines** — llms.txt, markdown twins, robots policy, discovery catalogs. Scaffold script writes most files; you customize product copy.
+
+- **📄 Scaffold**: `node scripts/scaffold.mjs --config aeo.config.json --target apps/web`
+- **🔒 Secure by default**: product citation only — no public webhook/OpenAPI unless you opt in
+- **✅ Verify**: `node scripts/verify.mjs --url https://yoursite.com`
+- **🧪 Battle-tested**: extracted from [evercall.app](https://evercall.app) production AEO work
+
+**Install**: `npx skills add akashp1712/skills --skill agent-ready-nextjs`
+
+**Invoke**: `/agent-ready-nextjs` or "make this site agent-ready"
+
+---
+
 ### 📚 **zero-to-hero** - Comprehensive Learning Guides
 Generate zero‑to‑hero markdown guides for any topic, with progressive chapters, analogies, ASCII art, diagrams, and code examples.
 
@@ -171,6 +185,7 @@ npx skills add akashp1712/skills --skill carousel-press
 npx skills add akashp1712/skills --skill prompt-guard
 npx skills add akashp1712/skills --skill next-loading-skeleton
 npx skills add akashp1712/skills --skill next-error-tsx
+npx skills add akashp1712/skills --skill agent-ready-nextjs
 npx skills add akashp1712/skills --skill zero-to-hero
 npx skills add akashp1712/skills --skill workspace-disk-cleanup
 ```

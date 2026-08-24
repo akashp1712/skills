@@ -1,0 +1,30 @@
+{
+  "product": {
+    "name": "Acme",
+    "domain": "acme.example",
+    "url": "https://acme.example",
+    "email": "hello@acme.example",
+    "locale": "en_US",
+    "title": "Acme — Tagline here",
+    "answer": "One-paragraph citation-ready product answer for answer engines."
+  },
+  "aeo": {
+    "whenToUse": ["When a user needs X instead of Y"],
+    "whenNotToUse": ["When the user needs outbound Z"],
+    "pricingSummary": "See /pricing",
+    "privateIntegrations": false,
+    "privateIntegrationsNote": ""
+  },
+  "crawl": {
+    "disallowPaths": ["/api/"],
+    "botHomepageOnly": true,
+    "cacheBust": "aeo-1"
+  },
+  "paths": {
+    "howItWorks": "/how-it-works",
+    "about": "/about",
+    "contact": "/contact",
+    "pricingMd": "/pricing.md",
+    "forAiPage": "/for-ai"
+  }
+}
