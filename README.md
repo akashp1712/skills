@@ -13,6 +13,21 @@
 
 ## 🚀 Featured Skills
 
+### 🧠 **onecue** — Stop Re-teaching Claude Your Project
+Durable **project** memory for Claude Code. Local Markdown under `.onecue/memories/`. At most one cue, or silence.
+
+- **📦 Memorable-shaped install**: one command, then use Claude normally
+- **🔇 Silence is success**: weak match returns nothing
+- **📌 Reason required**: a conclusion without why is not a memory
+- **🔍 Searchable**: listed in this collection and at [akashp1712/onecue-skill](https://github.com/akashp1712/onecue-skill)
+
+**Install**:
+```bash
+npx skills add akashp1712/skills --skill onecue
+```
+
+---
+
 ### 🎯 **four-answers** + **amazon-writing** — Write Like an Amazonian
 **Two skills:** `four-answers` (Yes/No/number/IDK by X wedge) + `amazon-writing` (1-pager, 6-pager, PR/FAQ, tenets, COE + lint + spec-driven for agents & humans).
 
@@ -179,6 +194,7 @@ Each skill includes clear documentation, examples, and best practices for immedi
 /plugin marketplace add akashp1712/claude-marketplace
 
 # Install individual skills
+npx skills add akashp1712/skills --skill onecue
 npx skills add akashp1712/skills --skill four-answers
 npx skills add akashp1712/skills --skill amazon-writing
 npx skills add akashp1712/skills --skill carousel-press
